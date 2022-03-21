@@ -1,0 +1,27 @@
+{
+  "name": "7-solitaire-image-recognition",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JosefSchmidt/7-solitaire-image-recognition.git"
+  },
+  "keywords": [],
+  "author": "Josef Brøndum Schmidt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JosefSchmidt/7-solitaire-image-recognition/issues"
+  },
+  "homepage": "https://github.com/JosefSchmidt/7-solitaire-image-recognition#readme",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^3.14.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "moment": "^2.29.1"
+  }
+}
