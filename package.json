@@ -19,9 +19,12 @@
   "homepage": "https://github.com/JosefSchmidt/7-solitaire-image-recognition#readme",
   "dependencies": {
     "@tensorflow/tfjs-node": "^3.14.0",
+    "buffer-image-size": "^0.6.4",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
-    "moment": "^2.29.1"
+    "jest": "^27.5.1",
+    "moment": "^2.29.1",
+    "sharp": "^0.30.3"
   }
 }
