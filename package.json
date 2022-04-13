@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/JosefSchmidt/7-solitaire-image-recognition#readme",
   "dependencies": {
+    "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs-node": "^3.14.0",
+    "axios": "^0.26.1",
     "buffer-image-size": "^0.6.4",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
