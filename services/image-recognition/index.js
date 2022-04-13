@@ -1,44 +1,65 @@
-// libs
-const tf = require("@tensorflow/tfjs-node");
-require("@tensorflow/tfjs-node");
+// Services
+const getPredictions = require("../../services/image-recognition/");
 
-// config
-const imageTypes = require("../../config/imageTypes");
+// Utilities
+const splitImageToPieces = require("../../utilities/splitImageToPieces");
+const getTopCard = require("../../utilities/getTopCard");
+const getBottomCard = require("../../utilities/getBottomCard");
 
-module.exports = async function (imageBuffer) {
+module.exports = async (imageBuffer) => {
   try {
-    let model = await tf.loadGraphModel(
-      "file://services/image-recognition/model/model.json"
-    );
+    let { talonBuffer, foundationBuffer, stacksBuffer } =
+      await splitImageToPieces(imageBuffer);
 
-    const input_size = model.inputs[0].shape[1];
+    const stacksPromises = [];
 
-    let image = tf.node.decodeImage(imageBuffer, 3);
+    stacksBuffer.forEach((columnBuffer) => {
+      let promise = new Promise(async function (resolve, reject) {
+        try {
+          const cards = await getPredictions(columnBuffer);
+          const topCard = getTopCard(cards);
+          let bottomCard = getBottomCard(cards);
 
-    let input = tf.image
-      .resizeBilinear(image, [input_size, input_size], true)
-      .div(255.0)
-      .expandDims(0);
+          if (!bottomCard) bottomCard = null;
+          return resolve({ topCard, bottomCard });
+        } catch (error) {
+          reject(error);
+        }
+      });
+      stacksPromises.push(promise);
+    });
 
-    const outputs = await model.executeAsync(input);
+    const [
+      talon,
+      foundation,
+      stack_1,
+      stack_2,
+      stack_3,
+      stack_4,
+      stack_5,
+      stack_6,
+      stack_7,
+    ] = await Promise.all([
+      getPredictions(talonBuffer),
+      getPredictions(foundationBuffer),
+      ...stacksPromises,
+    ]);
 
-    const [boxes, scores, classes, valid_detections] = outputs;
-    const boxes_data = boxes.dataSync();
-    const scores_data = scores.dataSync();
-    const classes_data = classes.dataSync();
-    const valid_detections_data = valid_detections.dataSync()[0];
+    let stacks = [
+      stack_1,
+      stack_2,
+      stack_3,
+      stack_4,
+      stack_5,
+      stack_6,
+      stack_7,
+    ];
 
-    let a = [];
-    for (let i = 0; i < valid_detections_data; ++i) {
-      let [x1, y1, x2, y2] = boxes_data.slice(i * 4, (i + 1) * 4);
-      const width = x2 - x1;
-      const height = y2 - y1;
-      const klass = imageTypes[classes_data[i]];
-      const score = scores_data[i].toFixed(2);
-      a.push(klass);
-    }
-
-    return a;
+    return {
+      talon,
+      foundation,
+      stacks,
+    };
   } catch (error) {
     console.log(error);
   }
