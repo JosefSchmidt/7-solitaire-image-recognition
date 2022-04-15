@@ -5,10 +5,21 @@ require("@tensorflow/tfjs-node");
 // config
 const imageTypes = require("../../config/imageTypes");
 
+/**
+ * The returned predictions have the format:
+ * [
+ *  { class: "10c", value: 10, color: colors.BLACK },
+ *  { class: "10d", value: 10, color: colors.RED },
+ *  { class: "10h", value: 10, color: colors.BLACK }
+ * ]
+ *
+ * @param {Buffer} imageBuffer
+ * @returns {Array}
+ */
 module.exports = async function (imageBuffer) {
   try {
     let model = await tf.loadGraphModel(
-      "file://services/image-recognition/model/model.json"
+      "services/image-recognition/model/model.json"
     );
 
     const input_size = model.inputs[0].shape[1];
