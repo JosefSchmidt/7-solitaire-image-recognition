@@ -4,7 +4,7 @@ const getPredictions = require("../../services/image-recognition/getPredictions"
 // Utilities
 const splitImageToPieces = require("../../utilities/splitImageToPieces");
 const getTopCard = require("../../utilities/getTopCard");
-const getBottomCard = require("../../utilities/getBottomCard");
+const sortCards = require("../../utilities/sortCards");
 
 module.exports = async (imageBuffer) => {
   try {
@@ -16,12 +16,11 @@ module.exports = async (imageBuffer) => {
     stacksBuffer.forEach((columnBuffer) => {
       let promise = new Promise(async function (resolve, reject) {
         try {
-          const cards = await getPredictions(columnBuffer);
+          let cards = await getPredictions(columnBuffer);
           const topCard = getTopCard(cards);
-          let bottomCard = getBottomCard(cards);
+          cards = sortCards(cards);
 
-          if (!bottomCard) bottomCard = null;
-          return resolve({ topCard, bottomCard });
+          return resolve({ topCard, cards });
         } catch (error) {
           reject(error);
         }
