@@ -19,7 +19,7 @@ const imageTypes = require("../../config/imageTypes");
 module.exports = async function (imageBuffer) {
   try {
     let model = await tf.loadGraphModel(
-      "services/image-recognition/model/model.json"
+      "file://services/image-recognition/model/model.json"
     );
 
     const input_size = model.inputs[0].shape[1];

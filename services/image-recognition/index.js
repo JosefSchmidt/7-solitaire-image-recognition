@@ -1,5 +1,5 @@
 // Services
-const getPredictions = require("../../services/image-recognition/");
+const getPredictions = require("../../services/image-recognition/getPredictions");
 
 // Utilities
 const splitImageToPieces = require("../../utilities/splitImageToPieces");

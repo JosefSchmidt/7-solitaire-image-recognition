@@ -11,7 +11,7 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .extract({ left: 0, width, height: height / 2, top: height / 2 })
       .toBuffer();
 
-    let columnsBuffer = [];
+    let stacksBuffer = [];
     for (let i = 0; i < 7; i++) {
       let column_dimensions = sizeOf(columnBuffer);
       let column_height = column_dimensions.height;
@@ -28,11 +28,11 @@ module.exports = async function splitImageToPieces(imageBuffer) {
         // .toFile(`column-${i}.jpg`);
         .toBuffer();
 
-      columnsBuffer.push(buffer);
+      stacksBuffer.push(buffer);
     }
 
     // The random stack
-    const stackBuffer = await sharp(imageBuffer)
+    const talonBuffer = await sharp(imageBuffer)
       .extract({ left: 0, width: width / 2, height: height / 2, top: 0 })
       .resize(416, 416, { fit: "contain" })
 
@@ -52,9 +52,9 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .toBuffer();
 
     return {
-      columnsBuffer,
-      stackBuffer,
+      talonBuffer,
       foundationBuffer,
+      stacksBuffer,
     };
   } catch (error) {
     throw error;
