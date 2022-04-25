@@ -1,4 +1,6 @@
 var assert = require("assert");
+const mockData = {stack: [], talon: {}, foundation: []}
+const gameAi = require("../services/game-ai");
 
 // Example unit test
 describe("Array", function () {
@@ -17,25 +19,72 @@ describe("Array", function () {
 });
 
 describe("#getPredictions()", function () {
-  describe("empty foundation and es in stack", function () {
-    it("expected game move: { action: 'move', from: 'Ad', to: 'f' }");
+  context("empty foundation and es in stack", function () {
+    it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function(){
+      // Arrange
+      let {talon, stack, foundation} = mockData;
+
+      let expectedMove = { action: 'move', from: 'Ad', to: 'f' };
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stack});
+
+      // Assert
+      assert.equal(resultMove, expectedMove)
+
+    });
   });
 });
 
 describe("#getPredictions()", function () {
-  describe("empty stack and movable king in stack", function () {
-    it("expected game move: { action: 'move', from: 'Kh', to: 's1' }");
+  context("empty stack and movable king in stack", function () {
+    it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function(){
+      // Arrange
+      let {talon, stack, foundation} = mockData;
+
+      let expectedMove = { action: 'move', from: 'kh', to: 's1' };
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stack});
+
+      // Assert
+      assert.equal(resultMove, expectedMove)
+
+    });
   });
 });
 
 describe("#getPredictions()", function () {
-  describe("ace heart in foundation and movable heart 2 in stack", function () {
-    it("expected game move: { action: 'move', from: '2h', to: 'Ah' }");
+  context("ace heart in foundation and movable heart 2 in stack", function () {
+    it("expected game move: { action: 'move', from: '2h', to: 'Ah' }", function(){
+      // Arrange
+      let {talon, stack, foundation} = mockData;
+
+      let expectedMove = { action: 'move', from: '2h', to: 'Ah' };
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stack});
+
+      // Assert
+      assert.equal(resultMove, expectedMove)
+
+    });
   });
 });
 
 describe("#getPredictions()", function () {
-  describe("talon is empty", function () {
-    it("expected game move: { action: 'draw' }");
+  context("talon is empty", function () {
+    it("expected game move: { action: 'draw' }", function(){
+      // Arrange
+      let {talon, stack, foundation} = mockData;
+
+      let expectedMove = { action: 'draw'};
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stack});
+
+      // Assert
+      assert.equal(resultMove, expectedMove)
+    });
   });
 });

@@ -1,8 +1,11 @@
+const moves = require("./moves")
+
 module.exports = function ({ talon, foundation, stack  }) {
   try {
+    let move = moves(talon, foundation, stack);
 
-    return 0;
+    return move;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
