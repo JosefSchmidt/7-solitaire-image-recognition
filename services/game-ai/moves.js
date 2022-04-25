@@ -1,10 +1,17 @@
 
-module.exports = function ({ talon, foundation, stack }) {
-    try {
-      
-  
-      return action, from, to;
-    } catch (error) {
-      throw error;
+
+
+const drawFromDeck = function(){
+    try{
+    var action = {action: 'draw'};
+    
+    return action; 
+    } catch(error){
+      console.log(error)
     }
+} 
+
+
+module.exports = {
+    drawFromDeck
   };
