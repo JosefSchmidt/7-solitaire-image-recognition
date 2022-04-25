@@ -73,6 +73,23 @@ describe("#getPredictions()", function () {
 });
 
 describe("#getPredictions()", function () {
+  context("no more moves", function () {
+    it("expected game move: { action: 'draw' }", function(){
+      // Arrange
+      let {talon, stack, foundation} = mockData;
+
+      let expectedMove = { action: 'draw'};
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stack});
+
+      // Assert
+      assert.equal(resultMove, expectedMove)
+    });
+  });
+});
+
+describe("#getPredictions()", function () {
   context("talon is empty", function () {
     it("expected game move: { action: 'draw' }", function(){
       // Arrange
