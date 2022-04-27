@@ -1,18 +1,42 @@
-const gameLogik = require("./gameLogik");
-const mockData = {talon: {},foundation: [{"class":"As","value":1,"suit":"SPADE","color":"BLACK"},{"class":"As","value":1,"suit":"SPADE","color":"BLACK"},{"class":"Ah","value":1,"suit":"HEART","color":"RED"},
-{"class":"Ac","value":1,"suit":"CLOVER","color":"BLACK"},{"class":"Ah","value":1,"suit":"HEART","color":"RED"}], 
-stack: [{"topCard":{"class":"Ad","value":11,"suit":"HEART","color":"RED"},
-"cards":[{"class":"Ad","value":11,"suit":"HEART","color":"RED"},{"class":"Ad","value":11,"suit":"HEART","color":"RED"}]}]};
-
-
-
-module.exports = function () {
+module.exports = function ({ talon, foundation, stacks }) {
   try {
-    let action = gameLogik(mockData);
-    console.log(action + " index");
 
-    return action;
+    if (Object.keys(talon).length === 0) return { action: "draw" };
+
+
+    let bestMove = null;
+
+    stacks.forEach(({cards}) => {
+
+      cards.forEach(card => {
+
+        stacks.forEach(({topCard}) => {
+
+          // Check if move is valid
+          if((card.color === topCard.color) || ( card.value - topCard.value !== 1 ) ) return;
+
+
+
+        })
+
+        foundation.forEach(foundationCard => {
+
+
+
+        })
+
+      })
+
+    })
+
+
+
+
   } catch (error) {
     console.log(error);
   }
 };
+
+
+
+
