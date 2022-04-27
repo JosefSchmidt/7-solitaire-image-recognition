@@ -1,7 +1,7 @@
+const foundationFunktion = require("../../utilities/foundationArray")
 
 
-
-const drawFromDeck = function(){
+/*module.exports.drawFromDeck = function(){
     try{
     var action = {action: 'draw'};
     
@@ -9,9 +9,32 @@ const drawFromDeck = function(){
     } catch(error){
       console.log(error)
     }
-} 
+} */
+
+module.exports.moveFromStackToFoundation = function({foundation, stack}){
+let newFoundation = foundationFunktion({foundation});
+let newStack = [];
 
 
-module.exports = {
-    drawFromDeck
-  };
+
+stack.forEach((element) => {
+  if (isNotExist(element)){
+    newStack.push(element)
+  }
+  function isNotExist(object){
+    return newStack.every(element => JSON.stringify(element) !== JSON.stringify(object) )
+  }
+})
+let topCard = newStack.map(e => {
+  return e.topCard.class;
+})
+
+if(topCard[0].substring(0,1) == 'A'){
+  console.log("true")
+}
+console.log(newFoundation);
+console.log(newStack);
+
+ 
+}
+

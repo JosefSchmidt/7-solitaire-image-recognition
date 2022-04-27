@@ -3,15 +3,15 @@ const fs = require("fs").promises;
 
 // Services
 const imageRecognition = require("../../services/image-recognition/");
-const gameAI = require("../../services/game-ai");
+//const gameAI = require("../../services/game-ai");
 
 module.exports = async (req, res) => {
   try {
-    const imageBuffer = await fs.readFile("images/statetest.JPG");
+    const imageBuffer = await fs.readFile("images/card_layout.JPG");
 
     const { talon, foundation, stacks } = await imageRecognition(imageBuffer);
 
-    const bestMove = await gameAI({ talon, foundation, stacks });
+    //const bestMove = await gameAI({ talon, foundation, stacks });
 
     // AI service
     console.log(`Talon: ${JSON.stringify(talon)}`);
