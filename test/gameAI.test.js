@@ -1,24 +1,10 @@
-var assert = require("assert");
+// Libs
+const assert = require("assert");
 
+// Services
 const gameAi = require("../services/game-ai");
 
-// Example unit test
-describe("Array", function () {
-  describe("#unshift()", function () {
-    it("should add element to the front of the array", function () {
-      // Arrange
-      let myArray = [1, 2, 3];
-
-      // Acts
-      myArray.unshift(4);
-
-      // Assert
-      assert.equal(myArray[0], 4);
-    });
-  });
-});
-
-/*describe("#getPredictions()", function () {
+/*describe("#aiService())", function () {
   context("empty foundation and es in stack", function () {
     it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function(){
       // Arrange
@@ -36,7 +22,7 @@ describe("Array", function () {
   });
 });*/
 
-/*describe("#getPredictions()", function () {
+/*describe("#aiService()", function () {
   context("empty stack and movable king in stack", function () {
     it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function(){
       // Arrange
@@ -54,7 +40,7 @@ describe("Array", function () {
   });
 });
 
-describe("#getPredictions()", function () {
+describe("#aiService()", function () {
   context("ace heart in foundation and movable heart 2 in stack", function () {
     it("expected game move: { action: 'move', from: '2h', to: 'Ah' }", function(){
       // Arrange
@@ -72,7 +58,7 @@ describe("#getPredictions()", function () {
   });
 });*/
 
-describe("#getPredictions()", function () {
+describe("#aiService()", function () {
   context("no more moves", function () {
     it("expected game move: { action: 'draw' }", function () {
       // Mockdata
@@ -129,7 +115,7 @@ describe("#getPredictions()", function () {
   });
 });
 
-/*describe("#getPredictions()", function () {
+/*describe("#aiService()", function () {
   context("talon is empty", function () {
     it("expected game move: { action: 'draw' }", function(){
       // Arrange
