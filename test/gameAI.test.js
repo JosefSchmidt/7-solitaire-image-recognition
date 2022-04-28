@@ -43,15 +43,63 @@ describe("#aiService()", function () {
   context("empty stack and movable king in stack", function () {
     it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function(){
       // Arrange
-      let {talon, foundation, stack} = mockData;
+      const mockData = {
+        talon: {class: "3s", value: 3, suit: "SPADE", color: "BLACK"},
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: {class: "3h", value: 3, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "3h", value: 3, suit: "HEART", color: "RED" },
+            ],
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {class: "Kh", value: 13, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "Kh", value: 13, suit: "HEART", color: "RED" },
+            ],
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [
+              { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            ]
+          },
+        ],
+      };
 
-      let expectedMove = { action: 'move', from: 'kh', to: 's1' };
+
+
+      const {talon, foundation, stacks} = mockData;
+
+      let expectedMove = { action: 'move', from: 'Kh', to: 's1' };
 
       // Acts 
-      let resultMove = gameAi({talon, foundation, stack});
+      let resultMove = gameAi({talon, foundation, stacks});
 
       // Assert
-      assert.equal(resultMove, expectedMove)
+      assert.deepStrictEqual(resultMove, expectedMove)
 
     });
   });
@@ -96,7 +144,7 @@ describe("#aiService()", function () {
     it("expected game move: { action: 'draw' }", function () {
       // Mockdata
       const mockData = {
-        talon: {},
+        talon: {class: "As", value: 1, suit: "SPADE", color: "BLACK"},
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
@@ -148,10 +196,49 @@ describe("#aiService()", function () {
   });
 });
 
-/*describe("#aiService()", function () {
+describe("#aiService()", function () {
   context("talon is empty", function () {
     it("expected game move: { action: 'draw' }", function(){
       // Arrange
+      const mockData = {
+        talon: {},
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            ],
+          },
+          {
+            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            ],
+          },
+          {
+            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            ],
+          },
+          {
+            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            ],
+          },
+        ],
+      };
       let {talon, foundation, stack} = mockData;
 
       let expectedMove = { action: 'draw'};
@@ -160,7 +247,7 @@ describe("#aiService()", function () {
       let resultMove = gameAi({talon, foundation, stack});
 
       // Assert
-      assert.equal(resultMove, expectedMove)
+      assert.deepStrictEqual(resultMove, expectedMove)
     });
   });
-});*/
+});
