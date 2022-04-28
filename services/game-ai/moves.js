@@ -15,7 +15,11 @@ module.exports.moveFromStackToFoundation = function({foundation, stack}){
 let newFoundation = foundationFunktion({foundation});
 let newStack = [];
 
+stack.map((stack, index) =>{
+  return console.log(index + " " + JSON.stringify(stack));
+})
 
+console.log(stack)
 
 stack.forEach((element) => {
   if (isNotExist(element)){

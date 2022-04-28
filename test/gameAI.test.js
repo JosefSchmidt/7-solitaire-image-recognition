@@ -4,16 +4,33 @@ const assert = require("assert");
 // Services
 const gameAi = require("../services/game-ai");
 
-/*describe("#aiService())", function () {
+/*describe("#aiService()", function () {
   context("empty foundation and es in stack", function () {
     it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function(){
       // Arrange
-      let {talon, foundation, stack} = mockData;
+      const mockData = {
+        talon: {class: "As", value: 1, suit: "SPADE", color: "BLACK"},
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: {class: "2s", value: 2, suit: "SPADE", color: "BLACK" },
+            cards: [
+              { class: "2s", value: 2, suit: "HEART", color: "BLACK" },
+            ],
+          }
+        ],
+      };
 
+      const { talon, foundation, stacks } = mockData;
       let expectedMove = { action: 'move', from: 'Ad', to: 'f' };
 
       // Acts 
-      let resultMove = gameAi({talon, foundation, stack});
+      let resultMove = gameAi({talon, foundation, stacks});
 
       // Assert
       assert.equal(resultMove, expectedMove)
@@ -22,7 +39,7 @@ const gameAi = require("../services/game-ai");
   });
 });*/
 
-/*describe("#aiService()", function () {
+describe("#aiService()", function () {
   context("empty stack and movable king in stack", function () {
     it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function(){
       // Arrange
@@ -44,19 +61,35 @@ describe("#aiService()", function () {
   context("ace heart in foundation and movable heart 2 in stack", function () {
     it("expected game move: { action: 'move', from: '2h', to: 'Ah' }", function(){
       // Arrange
-      let {talon, foundation, stack} = mockData;
-
+      const mockData = {
+        talon: {class: "3s", value: 3, suit: "SPADE", color: "BLACK"},
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: {class: "2h", value: 2, suit: "HEART", color: "RED" },
+            cards: [
+              { class: "2h", value: 2, suit: "HEART", color: "RED" },
+            ],
+          }
+        ],
+      };
       let expectedMove = { action: 'move', from: '2h', to: 'Ah' };
+      const { talon, foundation, stacks } = mockData;
 
       // Acts 
-      let resultMove = gameAi({talon, foundation, stack});
+      let resultMove = gameAi({talon, foundation, stacks});
 
       // Assert
-      assert.equal(resultMove, expectedMove)
+      assert.deepStrictEqual(resultMove, expectedMove)
 
     });
   });
-});*/
+});
 
 describe("#aiService()", function () {
   context("no more moves", function () {
