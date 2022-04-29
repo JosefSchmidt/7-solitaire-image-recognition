@@ -9,7 +9,7 @@ describe("#aiService()", function () {
     it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function(){
       // Arrange
       const mockData = {
-        talon: { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+        talon: { class: "2s", value: 2, suit: "SPADE", color: "BLACK" },
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
@@ -313,6 +313,100 @@ describe("#aiService()", function () {
       let {talon, foundation, stacks} = mockData;
 
       let expectedMove = { action: 'move', from: '3s', to: '4d'};
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stacks});
+
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove)
+    });
+  });
+});
+
+describe("#aiService()", function () {
+  context("move from talon to empty foundation", function () {
+    it("expected game move: { action: 'move', from: 'Ad', to 'f' }", function(){
+      // Arrange
+      const mockData = {
+        talon: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          
+        ],
+        stacks: [
+          {
+            topCard: {  class: "4d", value: 4, suit: "DIAMOND", color: "RED" },
+            cards: [
+              {  class: "4d", value: 4, suit: "DIAMOND", color: "RED" }
+            ],
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+        ],
+      };
+      let {talon, foundation, stacks} = mockData;
+
+      let expectedMove = { action: 'move', from: 'Ad', to: 'f'};
+
+      // Acts 
+      let resultMove = gameAi({talon, foundation, stacks});
+
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove)
+    });
+  });
+});
+
+describe("#aiService()", function () {
+  context("to foundation, under two is prio", function () {
+    it("expected game move: { action: 'move', from: '2s', to 'As' }", function(){
+      // Arrange
+      const mockData = {
+        talon: { class: "2s", value: 2, suit: "SPADE", color: "BLACK" },
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "3h", value: 3, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          
+        ],
+        stacks: [
+          {
+            topCard: {  class: "4h", value: 4, suit: "HEART", color: "RED" },
+            cards: [
+              {  class: "4h", value: 4, suit: "HEART", color: "RED" }
+            ],
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+          {
+            topCard: {},
+            cards: []
+          },
+        ],
+      };
+      let {talon, foundation, stacks} = mockData;
+
+      let expectedMove = { action: 'move', from: '2s', to: 'As'};
 
       // Acts 
       let resultMove = gameAi({talon, foundation, stacks});

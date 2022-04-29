@@ -6,13 +6,14 @@ const actionType = {move: "move", draw: "draw"}
 module.exports = function ({ talon, foundation, stacks }) {
   try {
     const {move, draw} = actionType;
-    //if talon is empty draw
-    if (Object.keys(talon).length === 0) return { action: draw };
     let checkMove = {};
     let bestMove = {from: "", to: "", point: 100};
     let outputMove = {};
     
+    //if talon is empty draw
+    if (Object.keys(talon).length === 0) return { action: draw };
     
+    //function for best move
     function bestMoveFunction(checkMove, bestMove){
       if(checkMove.point < bestMove.point){
         bestMove = checkMove;
@@ -37,21 +38,22 @@ module.exports = function ({ talon, foundation, stacks }) {
             checkMove = {from: talon.class, to: topCard.class, point: 20}; 
             return outputMove = bestMoveFunction(checkMove, bestMove);
           }
+
+
           //Stack
           //king to column
           if(Object.keys(topCard).length === 0 && card.value === 13){ 
-            checkMove = {from: card.class, to: stringStack, point: 3}; 
+            checkMove = {from: card.class, to: stringStack, point: 2}; 
             return outputMove = bestMoveFunction(checkMove, bestMove);
           }
           
-          // Check if move is valid
+          //Check if move is valid
           if((card.color === topCard.color) || (topCard.value - card.value !== 1 ) ) return;
 
-          // move card if valid
-          if(topCard.value - card.value === 1) {
-            checkMove = {from: card.class, to: topCard.class, point: 5}; 
-            return outputMove = bestMoveFunction(checkMove, bestMove);
-          } 
+          //move card if valid
+          checkMove = {from: card.class, to: topCard.class, point: 5}; 
+          return outputMove = bestMoveFunction(checkMove, bestMove);
+          
 
         })
           
@@ -59,9 +61,29 @@ module.exports = function ({ talon, foundation, stacks }) {
 
         foundation.forEach(foundationCard => {
 
-          //move from stack to empty foundation
+          //talon to foundation
+          //bigger than 2
+          if(talon.suit === foundationCard.suit && talon.value - foundationCard.value === 1 && talon.value > 2){
+            checkMove = {from: talon.class, to: foundationCard.class, point: 4}; 
+            return outputMove = bestMoveFunction(checkMove, bestMove);
+          }
+
+          //from 2 and down 
+          if(talon.suit === foundationCard.suit && talon.value - foundationCard.value === 1 && talon.value < 3){
+            checkMove = {from: talon.class, to: foundationCard.class, point: 1}; 
+            return outputMove = bestMoveFunction(checkMove, bestMove);
+          }
+
+          //ace
+          if(talon.value === 1 ){
+            checkMove = {from: talon.class, to: "f", point: 0}; 
+            return outputMove = bestMoveFunction(checkMove, bestMove);
+          }  
+
+          //stack to foundation
+          //empty foundation
           if(card.value === 1 ){
-            checkMove = {from: card.class, to: "f", point: 1}; 
+            checkMove = {from: card.class, to: "f", point: 0}; 
             return outputMove = bestMoveFunction(checkMove, bestMove);
           }  
 
@@ -69,11 +91,17 @@ module.exports = function ({ talon, foundation, stacks }) {
           if((card.color !== foundationCard.color) || (card.value - foundationCard.value !== 1 ) ) return;
 
           
-          // Move from stack to a already same suit in the foundation
-          if(card.suit === foundationCard.suit){
+          //Same suit in foundation under 3
+          if(card.suit === foundationCard.suit && card.value < 3){
             checkMove = {from: card.class, to: foundationCard.class, point: 2}; 
             return outputMove = bestMoveFunction(checkMove, bestMove);
           }  
+
+          //Same suit in foundation bigger than 2
+          if(talon.suit === foundationCard.suit && talon.value > 2){
+            checkMove = {from: talon.class, to: foundationCard.class, point: 4}; 
+            return outputMove = bestMoveFunction(checkMove, bestMove);
+          }
           
         })
 
