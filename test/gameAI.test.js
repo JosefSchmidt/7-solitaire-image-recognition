@@ -4,12 +4,12 @@ const assert = require("assert");
 // Services
 const gameAi = require("../services/game-ai");
 
-/*describe("#aiService()", function () {
+describe("#aiService()", function () {
   context("empty foundation and es in stack", function () {
     it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function(){
       // Arrange
       const mockData = {
-        talon: {class: "As", value: 1, suit: "SPADE", color: "BLACK"},
+        talon: { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
@@ -18,11 +18,12 @@ const gameAi = require("../services/game-ai");
         ],
         stacks: [
           {
-            topCard: {class: "2s", value: 2, suit: "SPADE", color: "BLACK" },
+            topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             cards: [
-              { class: "2s", value: 2, suit: "HEART", color: "BLACK" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             ],
-          }
+          },
         ],
       };
 
@@ -33,11 +34,11 @@ const gameAi = require("../services/game-ai");
       let resultMove = gameAi({talon, foundation, stacks});
 
       // Assert
-      assert.equal(resultMove, expectedMove)
+      assert.deepStrictEqual(resultMove, expectedMove)
 
     });
   });
-});*/
+});
 
 describe("#aiService()", function () {
   context("empty stack and movable king in stack", function () {
@@ -53,14 +54,14 @@ describe("#aiService()", function () {
         ],
         stacks: [
           {
+            topCard: {},
+            cards: []
+          },
+          {
             topCard: {class: "3h", value: 3, suit: "HEART", color: "RED" },
             cards: [
               { class: "3h", value: 3, suit: "HEART", color: "RED" },
             ],
-          },
-          {
-            topCard: {},
-            cards: []
           },
           {
             topCard: {class: "Kh", value: 13, suit: "HEART", color: "RED" },
@@ -69,16 +70,16 @@ describe("#aiService()", function () {
             ],
           },
           {
-            topCard: {},
-            cards: []
+            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }]
           },
           {
-            topCard: {},
-            cards: []
+            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }]
           },
           {
-            topCard: {},
-            cards: []
+            topCard: {class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }]
           },
           {
             topCard: {class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
@@ -99,7 +100,7 @@ describe("#aiService()", function () {
       let resultMove = gameAi({talon, foundation, stacks});
 
       // Assert
-      assert.deepStrictEqual(resultMove, expectedMove)
+      assert.deepStrictEqual(resultMove, expectedMove);
 
     });
   });
@@ -150,37 +151,9 @@ describe("#aiService()", function () {
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
           { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }
         ],
-        stacks: [
-          {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            ],
-          },
-          {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            ],
-          },
-          {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            ],
-          },
-          {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-            ],
-          },
-        ],
+        stacks: [],
       };
 
       // Arrange
@@ -207,34 +180,35 @@ describe("#aiService()", function () {
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
           { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          
         ],
         stacks: [
           {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             ],
           },
           {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             ],
           },
           {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             ],
           },
           {
-            topCard: { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+            topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             cards: [
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
-              { class: "Ad", value: 11, suit: "HEART", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
             ],
           },
         ],
