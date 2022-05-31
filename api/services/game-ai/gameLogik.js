@@ -1,5 +1,5 @@
 
-const moves = require("./moves");
+const moves = require("./checkGameMove");
 
 module.exports = function ({ talon, foundation, stack}) {
   try {
