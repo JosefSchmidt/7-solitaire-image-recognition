@@ -1,12 +1,20 @@
 // Libs
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { css } from "@emotion/css";
 
 // Styles
 import colors from "../../styles/colors";
+import template from "../../styles/template.svg";
+
+// Components
+import { BsImages } from "react-icons/bs";
+import { AiOutlineRotateLeft } from "react-icons/ai";
 
 const Solitaire7 = () => {
   const ref = useRef();
+  const canvasRef = useRef();
+
+  const [taken, setTaken] = useState(false);
 
   function startLiveFeed({ mediaStreamObject }) {
     ref.current.srcObject = mediaStreamObject;
@@ -28,6 +36,14 @@ const Solitaire7 = () => {
     startLiveFeed({ mediaStreamObject });
   }
 
+  function takeImage() {
+    setTaken(true);
+
+    canvasRef.current
+      .getContext("2d")
+      .drawImage(ref.current);
+  }
+
   useEffect(() => {
     main();
   }, []);
@@ -41,21 +57,25 @@ const Solitaire7 = () => {
           <br /> indenfor de angivne felter
         </p>
       </div>
-      <div className="game-template" />
+
+      <img src={template} alt="SVG as an image" />
+
+      <AiOutlineRotateLeft className="rotate" />
       <div className="take-image-wrapper">
-        <button />
+        <button onClick={takeImage} />
       </div>
-      <video ref={ref} />
+      <BsImages className="images" />
+
+      {!taken && <video ref={ref} />}
+      {taken && <canvas ref={canvasRef} />}
     </div>
   );
 };
 
 const componentStyle = () => css`
+  position: relative;
   height: 100%;
   width: 100%;
-  position: relative;
-  
-  
 
   .info {
     position: absolute;
@@ -95,18 +115,47 @@ const componentStyle = () => css`
     left: 50%;
     transform: translate(-50%, -30%);
     border: 2px solid ${colors.black};
-    object-fit: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: transparent;
+    z-index: 5;
 
     button {
       border-radius: 50%;
       height: 4rem;
       width: 4rem;
       border: 1px solid ${colors.black};
+      cursor: pointer;
     }
+  }
+
+  .rotate {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-245%, -100%);
+    fill: ${colors.white};
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  .images {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(200%, -130%);
+    fill: ${colors.white};
+    height: 2rem;
+    width: 2rem;
+  }
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   video {
@@ -116,6 +165,12 @@ const componentStyle = () => css`
     background-color: ${colors.black};
     border-radius: 3px;
     border: 1px solid ${colors.black};
+  }
+
+  canvas {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
   }
 `;
 
