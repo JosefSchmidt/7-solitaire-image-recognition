@@ -4,70 +4,64 @@ import { css } from "@emotion/css";
 
 // Styles
 import colors from "../../styles/colors";
+import breakpoints from "../../styles/breakpoints";
 import template from "../../styles/template.svg";
 
 // Components
 import { BsImages } from "react-icons/bs";
 import { AiOutlineRotateLeft } from "react-icons/ai";
 
+// Hooks
+import useMediaStream from "../hooks/useMediaStream";
+
 const Solitaire7 = () => {
-  const ref = useRef();
+  const mediaStream = useMediaStream({
+    video: { facingMode: "environment" },
+    audio: false,
+  });
+
   const canvasRef = useRef();
+  const videoRef = useRef();
+  const cardTemplateRef = useRef();
 
-  const [taken, setTaken] = useState(false);
+  function startLiveFeed({ mediaStream }) {
+    videoRef.current.srcObject = mediaStream;
 
-  function startLiveFeed({ mediaStreamObject }) {
-    ref.current.srcObject = mediaStreamObject;
-
-    ref.current.addEventListener(
+    videoRef.current.addEventListener(
       "loadedmetadata",
-      (e) => void ref.current.play()
+      (e) => void videoRef.current.play()
     );
   }
 
-  async function main() {
-    ref.current.setAttribute("playsinline", true);
-
-    const mediaStreamObject = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" },
-      audio: false,
-    });
-
-    startLiveFeed({ mediaStreamObject });
+  async function takeImage() {
+    const bitmap = await createImageBitmap(videoRef.current);
+    console.log(bitmap);
   }
 
-  function takeImage() {
-    setTaken(true);
 
-    canvasRef.current
-      .getContext("2d")
-      .drawImage(ref.current);
-  }
 
   useEffect(() => {
-    main();
-  }, []);
+    if (mediaStream) startLiveFeed({ mediaStream });
+
+  }, [mediaStream]);
 
   return (
     <div className={componentStyle()}>
-      <div className="info">
-        <p className="title">Tag et billede</p>
-        <p className="description">
-          Prøv at fang kortenes placering
-          <br /> indenfor de angivne felter
-        </p>
+      <div className="video-container">
+        <div className="info">
+          <p className="title">Tag et billede</p>
+          <p className="description">
+            Prøv at fang kortenes placering
+            <br /> indenfor de angivne felter
+          </p>
+        </div>
+        <BsImages ref={cardTemplateRef} className="images" />
+        <video ref={videoRef} playsinline />
+        <canvas hidden={true}/>
+        <div className="take-image-wrapper">
+          <button onClick={takeImage} />
+        </div>
       </div>
-
-      <img src={template} alt="SVG as an image" />
-
-      <AiOutlineRotateLeft className="rotate" />
-      <div className="take-image-wrapper">
-        <button onClick={takeImage} />
-      </div>
-      <BsImages className="images" />
-
-      {!taken && <video ref={ref} />}
-      {taken && <canvas ref={canvasRef} />}
     </div>
   );
 };
@@ -77,100 +71,71 @@ const componentStyle = () => css`
   height: 100%;
   width: 100%;
 
-  .info {
-    position: absolute;
+  .video-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-    top: 40px;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    justify-content: space-evenly;
+    height: 100%;
     width: 100%;
 
-    .title {
-      font-size: 1.5rem;
-      color: ${colors.white};
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .description {
-      margin-top: 0.5rem;
-      font-weight: 500;
-      line-height: 1.3;
-      color: ${colors.white};
-      text-align: center;
-    }
-  }
-
-  .take-image-wrapper {
-    position: absolute;
-    text-align: center;
-    background-color: white;
-    height: 4.5rem;
-    width: 4.5rem;
-    border-radius: 50%;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -30%);
-    border: 2px solid ${colors.black};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
-
-    button {
-      border-radius: 50%;
-      height: 4rem;
-      width: 4rem;
+    video {
+      height: auto;
+      width: 100%;
+      max-width: ${breakpoints.lg}px;
+      background-color: ${colors.black};
+      border-radius: 3px;
       border: 1px solid ${colors.black};
-      cursor: pointer;
+      margin-bottom: 1rem;
     }
-  }
+    
+    
 
-  .rotate {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-245%, -100%);
-    fill: ${colors.white};
-    height: 2.5rem;
-    width: 2.5rem;
-  }
+    .take-image-wrapper {
+      margin: 0 auto;
+      position: relative;
+      background-color: white;
+      height: 4.5rem;
+      width: 4.5rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 5;
 
-  .images {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(200%, -130%);
-    fill: ${colors.white};
-    height: 2rem;
-    width: 2rem;
-  }
+      button {
+        object-fit: fill;
+        border-radius: 50%;
+        height: 4rem;
+        width: 4rem;
+        border: 1px solid ${colors.black};
+        cursor: pointer;
+      }
+    }
 
-  img {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+    .info {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+      width: 100%;
+      margin-bottom: 1rem;
 
-  video {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    background-color: ${colors.black};
-    border-radius: 3px;
-    border: 1px solid ${colors.black};
-  }
+      .title {
+        font-size: 1.5rem;
+        color: ${colors.white};
+        font-weight: bold;
+        text-align: center;
+      }
 
-  canvas {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+      .description {
+        margin-top: 0.25rem;
+        font-weight: 500;
+        line-height: 1.3;
+        color: ${colors.white};
+        text-align: center;
+      }
+    }
   }
 `;
 
