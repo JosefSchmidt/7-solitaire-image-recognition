@@ -13,14 +13,7 @@ module.exports = async (req, res) => {
 
     const bestMove = await gameAI({ talon, foundation, stacks });
 
-    // AI service
-    console.log(`Talon: ${JSON.stringify(talon)}`);
-    console.log(`Foundation: ${JSON.stringify(foundation)}`);
-    stacks.map((stack, index) =>
-      console.log(`Stack ${index}: ${JSON.stringify(stack)}`)
-    );
-
-    res.send({ talon, foundation, stacks });
+    return res.send(bestMove);
   } catch (error) {
     console.log(error);
   }
