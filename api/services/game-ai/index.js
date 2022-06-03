@@ -24,14 +24,14 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.value - talon.value === 1
           ) {
             checkMove = { from: talon.class, to: topCard.class, point: 20 };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //Stack
           //king to column
           if (Object.keys(topCard).length === 0 && card.value === 13) {
             checkMove = { from: card.class, to: stringStack, point: 2 };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //Check if move is valid
@@ -40,7 +40,7 @@ module.exports = function ({ talon, foundation, stacks }) {
 
           //move card if valid
           checkMove = { from: card.class, to: topCard.class, point: 5 };
-          return (outputMove = bestMoveFunction(checkMove, bestMove));
+          return (outputMove = bestMoveFunction(checkMove));
         });
 
         foundation.forEach((foundationCard) => {
@@ -56,7 +56,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 4,
             };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //from 2 and down
@@ -70,20 +70,20 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 1,
             };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //ace
           if (talon.value === 1) {
             checkMove = { from: talon.class, to: "f", point: 0 };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //stack to foundation
           //empty foundation
           if (card.value === 1) {
             checkMove = { from: card.class, to: "f", point: 0 };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           // Check if move is valid
@@ -100,7 +100,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 2,
             };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
 
           //Same suit in foundation bigger than 2
@@ -110,7 +110,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 4,
             };
-            return (outputMove = bestMoveFunction(checkMove, bestMove));
+            return (outputMove = bestMoveFunction(checkMove));
           }
         });
       });
@@ -128,7 +128,8 @@ module.exports = function ({ talon, foundation, stacks }) {
 };
 
 //function for best move
-function bestMoveFunction(checkMove, bestMove) {
+function bestMoveFunction(checkMove) {
+  let bestMove = { from: "", to: "", point: 100 };
   if (checkMove.point < bestMove.point) {
     bestMove = checkMove;
     outputMove = { action: move, from: bestMove.from, to: bestMove.to };
