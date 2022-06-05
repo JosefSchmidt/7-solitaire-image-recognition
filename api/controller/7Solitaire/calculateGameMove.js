@@ -7,6 +7,11 @@ const gameAI = require("../../services/game-ai");
 
 module.exports = async (req, res) => {
   try {
+
+    console.log(req.body)
+
+    debugger;
+
     const imageBuffer = await fs.readFile("images/card_layout.JPG");
 
     const { talon, foundation, stacks } = await imageRecognition(imageBuffer);
