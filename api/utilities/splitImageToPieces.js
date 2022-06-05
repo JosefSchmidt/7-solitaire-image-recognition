@@ -7,17 +7,12 @@ module.exports = async function splitImageToPieces(imageBuffer) {
     let height = dimensions.height;
     let width = dimensions.width;
 
-    // if (width >= height) {
-    //   width = dimensions.height;
-    //   height = dimensions.width;
-    // }
-
     const columnBuffer = await sharp(imageBuffer)
       .extract({
         left: 0,
         width,
-        height: parseInt(height / 2, 10),
-        top: parseInt(height / 2, 10),
+        height: parseInt(height / 5, 10) * 4,
+        top: parseInt(height / 5, 10),
       })
       .toBuffer();
 
@@ -36,8 +31,8 @@ module.exports = async function splitImageToPieces(imageBuffer) {
           top: 0,
         })
         .resize(416, 416, { fit: "contain" })
-        // .toFile(`column-${i}.jpg`);
-        .toBuffer();
+        // .toFile(`images/column-${i}.JPEG`);
+      .toBuffer();
 
       stacksBuffer.push(buffer);
     }
@@ -46,26 +41,26 @@ module.exports = async function splitImageToPieces(imageBuffer) {
     const talonBuffer = await sharp(imageBuffer)
       .extract({
         left: 0,
-        width: parseInt(width / 2, 10),
-        height: parseInt(height / 2, 10),
+        width: parseInt(width / 3, 10),
+        height: parseInt(height / 5, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })
 
-      // .toFile(`stack.jpg`)
-      .toBuffer();
+      // .toFile(`images/stack.JPEG`);
+    .toBuffer();
 
     // The goal stacks
     const foundationBuffer = await sharp(imageBuffer)
       .extract({
-        left: width / 2,
-        width: parseInt(width / 2, 10),
-        height: parseInt(height / 2, 10),
+        left: parseInt(width / 3),
+        width: parseInt(width / 3, 10)*2,
+        height: parseInt(height / 5, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })
-      // .toFile(`foundation.jpg`)
-      .toBuffer();
+      // .toFile(`images/foundation.JPEG`);
+    .toBuffer();
 
     return {
       talonBuffer,

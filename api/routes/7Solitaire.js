@@ -19,6 +19,6 @@ const storage = multer.diskStorage({
 const upload = multer();
 
 
-router.post("/", upload.single("file"), require("../controller/7Solitaire/calculateGameMove"));
+router.put("/", upload.single("file"), require("../controller/7Solitaire/calculateGameMove"));
 
 module.exports = router;

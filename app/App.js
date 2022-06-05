@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import CardTemplateSvg from "./svgs/SvgTest";
 
 export default function App() {
   let cameraRef = useRef();
@@ -52,6 +53,7 @@ export default function App() {
     };
 
     let newPhoto = await cameraRef.current.takePictureAsync(options);
+
     setPhoto(newPhoto);
   }
 
@@ -83,21 +85,18 @@ export default function App() {
         let formData = new FormData();
         formData.append("file", { uri: localUri, name: filename, type });
 
-        const data = await fetch(
-          "http://192.168.0.105:3000/api/7-solitaire",
-          {
-            method: "POST",
-            body: formData,
-            header: {
-              'Accept': 'application/json',
-              "content-type": "multipart/form-data",
-            },
-          }
-        );
+        const data = await fetch("http://192.168.0.105:3000/api/7-solitaire", {
+          method: "PUT",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            "content-type": "multipart/form-data",
+          },
+        });
 
-        console.log(JSON.stringify(data))
+        const result = await data.json();
 
-        // setText(data);
+        setText(JSON.stringify(result));
       } catch (error) {
         console.log(error);
       }
@@ -110,8 +109,7 @@ export default function App() {
     };
 
     return (
-      <SafeAreaView style={styles.container}>
-        <Text>{text}</Text>
+      <SafeAreaView style={styles.cameraContainer}>
         <Image
           style={styles.preview}
           source={{ uri: "data:image/jpg;base64," + photo.base64 }}
@@ -126,36 +124,44 @@ export default function App() {
   }
 
   return (
-    <Camera style={styles.container} ref={cameraRef}>
+    <View style={styles.container}>
+      <View style={styles.cameraContainer}>
+        <Camera ref={cameraRef}>
+          <CardTemplateSvg />
+        </Camera>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.takePicture} onPress={takePic} />
       </View>
-      <StatusBar style="auto" />
-    </Camera>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "flex-end",
+    backgroundColor: "black"
+  },
+
+  cameraContainer: {
+    height: "50%",
+    width: "100%"
   },
 
   buttonContainer: {
-    width: 80,
-    height: 80,
     borderRadius: 100,
     display: "flex",
-    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 50,
+    marginBottom: 25,
+    marginTop: 25,
+    backgroundColor: "black"
   },
 
   preview: {
-    alignSelf: "stretch",
-    flex: 1,
+    height: "100%",
+    width: "100%"
   },
 
   takePicture: {
