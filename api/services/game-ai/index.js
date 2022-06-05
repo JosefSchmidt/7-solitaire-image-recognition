@@ -24,23 +24,25 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.value - talon.value === 1
           ) {
             checkMove = { from: talon.class, to: topCard.class, point: 20 };
-            return (outputMove = bestMoveFunction(checkMove));
+            (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
-          //Stack
+          //Stack to stack
           //king to column
           if (Object.keys(topCard).length === 0 && card.value === 13) {
             checkMove = { from: card.class, to: stringStack, point: 2 };
-            return (outputMove = bestMoveFunction(checkMove));
+            (bestMove = bestMoveFunction(checkMove, bestMove));
           }
-
+          
           //Check if move is valid
           if (card.color === topCard.color || topCard.value - card.value !== 1)
             return;
-
+          
           //move card if valid
-          checkMove = { from: card.class, to: topCard.class, point: 5 };
-          return (outputMove = bestMoveFunction(checkMove));
+          if(topCard.color !== card.color && topCard.value - card.value === 1){
+            checkMove = { from: card.class, to: topCard.class, point: 5 };
+            return (bestMove = bestMoveFunction(checkMove, bestMove));
+          }
         });
 
         foundation.forEach((foundationCard) => {
@@ -56,7 +58,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 4,
             };
-            return (outputMove = bestMoveFunction(checkMove));
+            (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
           //from 2 and down
@@ -70,20 +72,20 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 1,
             };
-            return (outputMove = bestMoveFunction(checkMove));
+            (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
           //ace
           if (talon.value === 1) {
             checkMove = { from: talon.class, to: "f", point: 0 };
-            return (outputMove = bestMoveFunction(checkMove));
+            return (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
           //stack to foundation
           //empty foundation
           if (card.value === 1) {
             checkMove = { from: card.class, to: "f", point: 0 };
-            return (outputMove = bestMoveFunction(checkMove));
+            return (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
           // Check if move is valid
@@ -100,7 +102,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 2,
             };
-            return (outputMove = bestMoveFunction(checkMove));
+            (bestMove = bestMoveFunction(checkMove, bestMove));
           }
 
           //Same suit in foundation bigger than 2
@@ -110,16 +112,17 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: foundationCard.class,
               point: 4,
             };
-            return (outputMove = bestMoveFunction(checkMove));
+            return (bestMove = bestMoveFunction(checkMove, bestMove));
           }
         });
       });
     });
 
     //if avalible moves draw
-    if (Object.keys(outputMove).length === 0) {
+    if (bestMove.point === 100) {
       return { action: draw };
     } else {
+      outputMove = { action: move, from: bestMove.from, to: bestMove.to };
       return outputMove;
     }
   } catch (error) {
@@ -128,12 +131,11 @@ module.exports = function ({ talon, foundation, stacks }) {
 };
 
 //function for best move
-function bestMoveFunction(checkMove) {
-  let bestMove = { from: "", to: "", point: 100 };
+function bestMoveFunction(checkMove, bestMove) {
   if (checkMove.point < bestMove.point) {
     bestMove = checkMove;
-    outputMove = { action: move, from: bestMove.from, to: bestMove.to };
+    console.log(bestMove.point);
   }
-
-  return outputMove;
+  console.log(bestMove.point);
+  return bestMove;
 }
