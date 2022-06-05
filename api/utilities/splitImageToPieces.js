@@ -7,11 +7,22 @@ module.exports = async function splitImageToPieces(imageBuffer) {
     let height = dimensions.height;
     let width = dimensions.width;
 
+    // if (width >= height) {
+    //   width = dimensions.height;
+    //   height = dimensions.width;
+    // }
+
     const columnBuffer = await sharp(imageBuffer)
-      .extract({ left: 0, width, height: height / 2, top: height / 2 })
+      .extract({
+        left: 0,
+        width,
+        height: parseInt(height / 2, 10),
+        top: parseInt(height / 2, 10),
+      })
       .toBuffer();
 
     let stacksBuffer = [];
+
     for (let i = 0; i < 7; i++) {
       let column_dimensions = sizeOf(columnBuffer);
       let column_height = column_dimensions.height;
@@ -19,9 +30,9 @@ module.exports = async function splitImageToPieces(imageBuffer) {
 
       let buffer = await sharp(columnBuffer)
         .extract({
-          left: (column_width / 7) * i,
-          width: column_width / 7,
-          height: column_height,
+          left: parseInt(column_width / 7, 10) * i,
+          width: parseInt(column_width / 7, 10),
+          height: parseInt(column_height, 10),
           top: 0,
         })
         .resize(416, 416, { fit: "contain" })
@@ -33,7 +44,12 @@ module.exports = async function splitImageToPieces(imageBuffer) {
 
     // The random stack
     const talonBuffer = await sharp(imageBuffer)
-      .extract({ left: 0, width: width / 2, height: height / 2, top: 0 })
+      .extract({
+        left: 0,
+        width: parseInt(width / 2, 10),
+        height: parseInt(height / 2, 10),
+        top: 0,
+      })
       .resize(416, 416, { fit: "contain" })
 
       // .toFile(`stack.jpg`)
@@ -43,8 +59,8 @@ module.exports = async function splitImageToPieces(imageBuffer) {
     const foundationBuffer = await sharp(imageBuffer)
       .extract({
         left: width / 2,
-        width: width / 2,
-        height: height / 2,
+        width: parseInt(width / 2, 10),
+        height: parseInt(height / 2, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })

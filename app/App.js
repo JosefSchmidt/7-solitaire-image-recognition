@@ -11,7 +11,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import { Camera } from "expo-camera";
-import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 
 export default function App() {
@@ -20,6 +19,8 @@ export default function App() {
   const [hasMediaLibraryPermissions, setHasMediaLibraryPermissions] =
     useState(undefined);
   const [photo, setPhoto] = useState(undefined);
+
+  const [text, setText] = useState("");
 
   useEffect(() => {
     (async function () {
@@ -74,27 +75,29 @@ export default function App() {
       try {
         // ImagePicker saves the taken photo to disk and returns a local URI to it
         let localUri = photo.uri;
-        let filename = localUri.split('/').pop();
+        let filename = localUri.split("/").pop();
 
         let match = /\.(\w+)$/.exec(filename);
         let type = match ? `image/${match[1]}` : `image`;
 
         let formData = new FormData();
-        formData.append('photo', { uri: localUri, name: filename, type });
+        formData.append("file", { uri: localUri, name: filename, type });
 
-        for (let [key, value] of formData.entries()) {
-          console.log(`Key: ${key} -- Value: ${value}`);
-        }
+        const data = await fetch(
+          "http://192.168.0.105:3000/api/7-solitaire",
+          {
+            method: "POST",
+            body: formData,
+            header: {
+              'Accept': 'application/json',
+              "content-type": "multipart/form-data",
+            },
+          }
+        );
 
-        console.log("Hello world")
+        console.log(JSON.stringify(data))
 
-        return await fetch('http://192.168.0.105:3000/api/7-solitaire', {
-          method: 'POST',
-          body: formData,
-          header: {
-            'content-type': 'multipart/form-data',
-          },
-        });
+        // setText(data);
       } catch (error) {
         console.log(error);
       }
@@ -108,6 +111,7 @@ export default function App() {
 
     return (
       <SafeAreaView style={styles.container}>
+        <Text>{text}</Text>
         <Image
           style={styles.preview}
           source={{ uri: "data:image/jpg;base64," + photo.base64 }}
