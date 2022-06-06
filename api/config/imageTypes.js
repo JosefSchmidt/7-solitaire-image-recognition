@@ -1,14 +1,5 @@
-let colors = {
-  BLACK: "BLACK",
-  RED: "RED",
-};
-
-let suit = {
-  CLOVER: "CLOVER",
-  HEART: "HEART",
-  DIAMOND: "DIAMOND",
-  SPADE: "SPADE",
-};
+const suit = require("./suits");
+const colors = require("./cardColors");
 
 module.exports = {
   0: { class: "10c", value: 10, suit: suit.CLOVER, color: colors.BLACK },

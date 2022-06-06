@@ -1,3 +1,4 @@
+// Libs
 const sizeOf = require("buffer-image-size");
 const sharp = require("sharp");
 
@@ -32,7 +33,7 @@ module.exports = async function splitImageToPieces(imageBuffer) {
         })
         .resize(416, 416, { fit: "contain" })
         // .toFile(`images/column-${i}.JPEG`);
-      .toBuffer();
+        .toBuffer();
 
       stacksBuffer.push(buffer);
     }
@@ -48,20 +49,19 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .resize(416, 416, { fit: "contain" })
 
       // .toFile(`images/stack.JPEG`);
-    .toBuffer();
+      .toBuffer();
 
     // The goal stacks
     const foundationBuffer = await sharp(imageBuffer)
       .extract({
         left: parseInt(width / 3),
-        width: parseInt(width / 3, 10)*2,
+        width: parseInt(width / 3, 10) * 2,
         height: parseInt(height / 3, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })
       // .toFile(`images/foundation.JPEG`);
-    .toBuffer();
-
+      .toBuffer();
 
     return {
       talonBuffer,

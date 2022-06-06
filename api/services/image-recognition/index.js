@@ -31,8 +31,8 @@ module.exports = async (imageBuffer) => {
       stacksPromises.push(promise);
     });
 
-    const [
-      talon,
+    let [
+      talonCards,
       foundation,
       stack_1,
       stack_2,
@@ -57,8 +57,14 @@ module.exports = async (imageBuffer) => {
       stack_7,
     ];
 
+    let talon = null;
+    if (Array.isArray(talonCards) && talonCards.length > 0) {
+      let removedDuplicateTalonCards = removeDuplicateCards(talonCards);
+      talon = removedDuplicateTalonCards[0];
+    }
+
     return {
-      talon: removeDuplicateCards(talon),
+      talon: talon,
       foundation: removeDuplicateCards(foundation),
       stacks,
     };

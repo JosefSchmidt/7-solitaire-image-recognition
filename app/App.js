@@ -73,7 +73,7 @@ export default function App() {
   if (photo) {
     let sharePic = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
 
         let localUri = photo.uri;
 
@@ -96,11 +96,11 @@ export default function App() {
 
         const result = await data.json();
 
-        setBestMove(JSON.stringify(result));
+        // setBestMove(JSON.stringify(result));
       } catch (error) {
-        setError(true);
+        // setError(true);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
