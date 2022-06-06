@@ -11,8 +11,8 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .extract({
         left: 0,
         width,
-        height: parseInt(height / 5, 10) * 4,
-        top: parseInt(height / 5, 10),
+        height: parseInt(height / 3, 10) * 2,
+        top: parseInt(height / 3, 10),
       })
       .toBuffer();
 
@@ -42,7 +42,7 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .extract({
         left: 0,
         width: parseInt(width / 3, 10),
-        height: parseInt(height / 5, 10),
+        height: parseInt(height / 3, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })
@@ -55,12 +55,13 @@ module.exports = async function splitImageToPieces(imageBuffer) {
       .extract({
         left: parseInt(width / 3),
         width: parseInt(width / 3, 10)*2,
-        height: parseInt(height / 5, 10),
+        height: parseInt(height / 3, 10),
         top: 0,
       })
       .resize(416, 416, { fit: "contain" })
       // .toFile(`images/foundation.JPEG`);
     .toBuffer();
+
 
     return {
       talonBuffer,

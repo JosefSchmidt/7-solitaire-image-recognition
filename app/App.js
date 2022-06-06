@@ -1,38 +1,63 @@
-import { StatusBar } from "expo-status-bar";
+// Libs
+import { useEffect, useRef, useState } from "react";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
+import * as MediaLibrary from "expo-media-library";
+
+// Components
 import {
-  Button,
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  Image,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
-
-import { Camera } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import CardTemplateSvg from "./svgs/SvgTest";
+import { Camera } from "expo-camera";
+import BestMove from "./components/BestMove";
 
 export default function App() {
   let cameraRef = useRef();
+
   const [hasCameraPermissions, setHasCameraPermissions] = useState(undefined);
   const [hasMediaLibraryPermissions, setHasMediaLibraryPermissions] =
     useState(undefined);
   const [photo, setPhoto] = useState(undefined);
+  const [bestMove, setBestMove] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const [text, setText] = useState("");
+  async function requestPermissions() {
+    const cameraPermissions = await Camera.requestCameraPermissionsAsync();
+    const mediaLibraryPermissions =
+      await MediaLibrary.requestPermissionsAsync();
+    setHasCameraPermissions(cameraPermissions.status === "granted");
+    setHasMediaLibraryPermissions(mediaLibraryPermissions.status === "granted");
+  }
+
+  async function takePicture() {
+    let options = {
+      quality: 1,
+      base64: true,
+      exit: false,
+    };
+
+    let newPhoto = await cameraRef.current.takePictureAsync(options);
+    setPhoto(newPhoto);
+  }
+
+  function resetPicture() {
+    setLoading(false);
+    setError(false);
+    setBestMove(false);
+    setPhoto(undefined);
+  }
 
   useEffect(() => {
-    (async function () {
-      const cameraPermissions = await Camera.requestCameraPermissionsAsync();
-      const mediaLibraryPermissions =
-        await MediaLibrary.requestPermissionsAsync();
-      setHasCameraPermissions(cameraPermissions.status === "granted");
-      setHasMediaLibraryPermissions(
-        mediaLibraryPermissions.status === "granted"
-      );
-    })();
+    requestPermissions();
   }, []);
 
   if (hasCameraPermissions === undefined) {
@@ -45,38 +70,13 @@ export default function App() {
     );
   }
 
-  async function takePic() {
-    let options = {
-      quality: 1,
-      base64: true,
-      exit: false,
-    };
-
-    let newPhoto = await cameraRef.current.takePictureAsync(options);
-
-    setPhoto(newPhoto);
-  }
-
-  function DataURIToBlob(dataURI) {
-    const splitDataURI = dataURI.split(",");
-    const byteString =
-      splitDataURI[0].indexOf("base64") >= 0
-        ? atob(splitDataURI[1])
-        : decodeURI(splitDataURI[1]);
-    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-
-    const ia = new Uint8Array(byteString.length);
-    for (let i = 0; i < byteString.length; i++)
-      ia[i] = byteString.charCodeAt(i);
-
-    return new Blob([ia], { type: mimeString });
-  }
-
   if (photo) {
     let sharePic = async () => {
       try {
-        // ImagePicker saves the taken photo to disk and returns a local URI to it
+        setLoading(true);
+
         let localUri = photo.uri;
+
         let filename = localUri.split("/").pop();
 
         let match = /\.(\w+)$/.exec(filename);
@@ -96,72 +96,136 @@ export default function App() {
 
         const result = await data.json();
 
-        setText(JSON.stringify(result));
+        setBestMove(JSON.stringify(result));
       } catch (error) {
-        console.log(error);
+        setError(true);
+      } finally {
+        setLoading(false);
       }
     };
 
-    let savePhoto = () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      });
-    };
+    if (loading || bestMove || error) {
+      return (
+        <BestMove
+          move={bestMove}
+          error={error}
+          loading={loading}
+          onResetPicture={resetPicture}
+        />
+      );
+    }
 
     return (
-      <SafeAreaView style={styles.cameraContainer}>
-        <Image
-          style={styles.preview}
-          source={{ uri: "data:image/jpg;base64," + photo.base64 }}
-        />
-        <Button title="Share" onPress={sharePic} />
-        {hasMediaLibraryPermissions ? (
-          <Button title="Save" onPress={savePhoto} />
-        ) : undefined}
-        <Button title="Discard" onPress={() => setPhoto(undefined)} />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.cameraWrapper}>
+          <ImageBackground
+            style={styles.preview}
+            source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+          >
+            <CardTemplateSvg />
+          </ImageBackground>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.buttonContainer.button}
+            onPress={sharePic}
+          >
+            <Text style={styles.buttonContainer.button.title}>
+              Udregn bedste træk
+            </Text>
+            <Ionicons
+              style={styles.buttonContainer.button.svg}
+              name="md-checkmark-circle"
+              color="white"
+              size={25}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer.button}
+            onPress={resetPicture}
+          >
+            <Text style={styles.buttonContainer.button.title}>
+              Tag et nyt billede
+            </Text>
+            <Feather
+              style={styles.buttonContainer.button.svg}
+              name="trash"
+              color="white"
+              size={25}
+            />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.cameraContainer}>
+      <View style={styles.cameraWrapper}>
         <Camera ref={cameraRef}>
           <CardTemplateSvg />
         </Camera>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.takePicture} onPress={takePic} />
+      <View style={styles.cameraButtonContainer}>
+        <TouchableOpacity style={styles.takePicture} onPress={takePicture} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    marginTop: 20,
+
+    button: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+      marginTop: 5,
+      borderWidth: "0.5",
+      textColor: "white",
+      borderRadius: 2,
+      borderColor: "white",
+      padding: 15,
+      marginRight: 15,
+      marginLeft: 15,
+
+      title: {
+        fontSize: 18,
+        textAlign: "center",
+        color: "white",
+        fontWeight: "500",
+      },
+
+      svg: {
+        marginLeft: 10,
+      },
+    },
+  },
+
   container: {
     flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "black"
+    justifyContent: "center",
+    backgroundColor: "black",
   },
 
-  cameraContainer: {
-    height: "50%",
-    width: "100%"
+  cameraWrapper: {
+    height: 600,
+    width: "100%",
   },
 
-  buttonContainer: {
+  cameraButtonContainer: {
     borderRadius: 100,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 25,
-    marginTop: 25,
-    backgroundColor: "black"
+    marginTop: 30,
+    backgroundColor: "black",
   },
 
   preview: {
-    height: "100%",
-    width: "100%"
+    flex: 1,
   },
 
   takePicture: {

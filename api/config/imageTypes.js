@@ -36,7 +36,7 @@ module.exports = {
   18: { class: "5h", value: 5, suit: suit.HEART, color: colors.RED },
   19: { class: "5s", value: 5, suit: suit.SPADE, color: colors.BLACK },
 
-  20: { class: "6h", value: 6, suit: suit.CLOVER, color: colors.BLACK },
+  20: { class: "6c", value: 6, suit: suit.CLOVER, color: colors.BLACK },
   21: { class: "6d", value: 6, suit: suit.DIAMOND, color: colors.RED },
   22: { class: "6h", value: 6, suit: suit.HEART, color: colors.RED },
   23: { class: "6s", value: 6, suit: suit.SPADE, color: colors.BLACK },

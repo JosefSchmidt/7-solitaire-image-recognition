@@ -134,8 +134,6 @@ module.exports = function ({ talon, foundation, stacks }) {
 function bestMoveFunction(checkMove, bestMove) {
   if (checkMove.point < bestMove.point) {
     bestMove = checkMove;
-    console.log(bestMove.point);
   }
-  console.log(bestMove.point);
   return bestMove;
 }
