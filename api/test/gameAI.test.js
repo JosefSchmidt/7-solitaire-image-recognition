@@ -85,7 +85,7 @@ describe("#aiService()", function () {
         ],
         stacks: [
           {
-            topCard: {},
+            topCard: null,
             cards: [],
           },
           {
@@ -246,7 +246,7 @@ describe("#aiService()", function () {
     it("expected game move: { action: 'draw' }", function () {
       // Arrange
       const mockData = {
-        talon: {},
+        talon: null,
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
