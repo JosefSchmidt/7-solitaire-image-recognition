@@ -70,65 +70,60 @@ describe("#aiService()", function () {
 });
 
 describe("#aiService()", function () {
-  context(
-    "stack 1 is empty and there is a movable king in one of the stacks",
-    function () {
-      it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function () {
-        // Arrange
-        const mockData = {
-          talon: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" },
-          foundation: [
-            { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
-            { class: "Ah", value: 1, suit: "HEART", color: "RED" },
-            { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
-          ],
-          stacks: [
-            {
-              topCard: {},
-              cards: [],
-            },
-            {
-              topCard: { class: "3h", value: 3, suit: "HEART", color: "RED" },
-              cards: [{ class: "3h", value: 3, suit: "HEART", color: "RED" }],
-            },
-            {
-              topCard: { class: "Kh", value: 13, suit: "HEART", color: "RED" },
-              cards: [{ class: "Kh", value: 13, suit: "HEART", color: "RED" }],
-            },
-            {
-              topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
-              cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }],
-            },
-            {
-              topCard: { class: "9h", value: 9, suit: "HEART", color: "RED" },
-              cards: [{ class: "9h", value: 9, suit: "HEART", color: "RED" }],
-            },
-            {
-              topCard: { class: "4h", value: 4, suit: "HEART", color: "RED" },
-              cards: [
-                { class: "4h", value: 4, suit: "HEART", color: "RED" },
-                { class: "5s", value: 5, suit: "SPADE", color: "BLACK" },
-              ],
-            },
-            {
-              topCard: { class: "6s", value: 6, suit: "SPADE", color: "BLACK" },
-              cards: [{ class: "6s", value: 6, suit: "SPADE", color: "BLACK" }],
-            },
-          ],
-        };
+  context("stack 1 is empty and there is a movable king in one of the stacks", function () {
+    it("expected game move: { action: 'move', from: 'Kh', to: 's1' }", function () {
+      // Arrange
+      const mockData = {
+        talon: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" },
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+        ],
+        stacks: [
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: { class: "3h", value: 3, suit: "HEART", color: "RED" },
+            cards: [{ class: "3h", value: 3, suit: "HEART", color: "RED" }],
+          },
+          {
+            topCard: { class: "Kh", value: 13, suit: "HEART", color: "RED" },
+            cards: [{ class: "Kh", value: 13, suit: "HEART", color: "RED" }],
+          },
+          {
+            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: {class: "9h", value: 9, suit: "HEART", color: "RED" },
+            cards: [{class: "9h", value: 9, suit: "HEART", color: "RED"  }],
+          },
+          {
+            topCard: { class: "4h", value: 4, suit: "HEART", color: "RED"  },
+            cards: [{ class: "4h", value: 4, suit: "HEART", color: "RED" },
+                    { class: "5s", value: 5, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: {  class: "6s", value: 6, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "6s", value: 6, suit: "SPADE", color: "BLACK" }],
+          },
+        ],
+      };
 
-        const { talon, foundation, stacks } = mockData;
+      const { talon, foundation, stacks } = mockData;
 
-        let expectedMove = { action: "move", from: "Kh", to: "s1" };
+      let expectedMove = { action: "move", from: "Kh", to: "s1" };
 
-        // Acts
-        let resultMove = gameAi({ talon, foundation, stacks });
+      // Acts
+      let resultMove = gameAi({ talon, foundation, stacks });
 
-        // Assert
-        assert.deepStrictEqual(resultMove, expectedMove);
-      });
-    }
-  );
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove);
+    });
+  });
 });
 
 describe("#aiService()", function () {
@@ -254,7 +249,7 @@ describe("#aiService()", function () {
     it("expected game move: { action: 'draw' }", function () {
       // Arrange
       const mockData = {
-        talon: {},
+        talon: null,
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
