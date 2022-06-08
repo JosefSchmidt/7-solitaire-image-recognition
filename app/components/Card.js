@@ -41,19 +41,19 @@ const Card = ({ rank, suit } = {}) => {
 
   function convertToColumn(rank) {
     switch(rank){
-      case 1:
+      case 0:
         return "Column 1";
-      case 2:
+      case 1:
         return "Column 2";
-      case 3:
+      case 2:
         return "Column 3";
-      case 4:
+      case 3:
         return "Column 4";
-      case 5:
+      case 4:
         return "Column 5"; 
-      case 6:
+      case 5:
         return "Column 6";
-      case 7:
+      case 6:
         return "Column 7";
       default:
         Alert.alert("Rank not found");

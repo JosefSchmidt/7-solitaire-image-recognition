@@ -48,7 +48,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Stack to stack
           // Move king to empty column
           if (card.value === 13 && topCard === null) {
-            checkMove = { from: card.class, to: stringStack, point: 2 };
+            checkMove = { from: card, to: {suit: "Stack", value: index}, point: 2 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
           
@@ -103,7 +103,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Stack to foundation
           // Empty foundation
           if (card.value === 1) {
-            checkMove = { from: card.class, to: "f", point: 0 };
+            checkMove = { from: card, to: { value: 0, suit: "Foundation" }, point: 0 };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
           }
 
@@ -115,10 +115,10 @@ module.exports = function ({ talon, foundation, stacks }) {
             return;
 
           // Same suit in foundation under 3
-          if (card.suit === foundationCard.suit && card.value < 3) {
+          if (card.suit === foundationCard.suit && card.value === 2) {
             checkMove = {
-              from: card.class,
-              to: foundationCard.class,
+              from: card,
+              to: foundationCard,
               point: 2,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
