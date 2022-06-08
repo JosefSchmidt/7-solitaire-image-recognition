@@ -62,7 +62,7 @@ const Card = ({ rank, suit } = {}) => {
 
   return (
     <View style={styles}>
-      {suit === "Foundation" && rank === 0 (
+      {suit === "Foundation" && rank === 0 &&  (
         <View style={styles.card}>
           {/*new style here for foundation */}
           <Text style={styles.card.rankBlack}>{"Foundation"}</Text>

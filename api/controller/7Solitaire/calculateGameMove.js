@@ -49,6 +49,7 @@ module.exports = async (req, res) => {
 
     return res.send(bestMove);
   } catch (error) {
+    res.sendStatus(500);
     console.log(error);
   }
 };
