@@ -41,7 +41,7 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.value - talon.value === 1
           ) {
             //checkMove = { from: talon, to: topCard, point: 20 };
-            checkMove = { from: talon.class, to: topCard.class, point: 20 };
+            checkMove = { from: talon, to: topCard, point: 20 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
 
@@ -58,7 +58,7 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== card.color &&
             topCard.value - card.value === 1
           ) {
-            checkMove = { from: card.class, to: topCard.class, point: 5 };
+            checkMove = { from: card, to: topCard, point: 5 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
         });
@@ -67,7 +67,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Talon to foundation
           // Ace
           if (talon.value === 1) {
-            checkMove = { from: talon.class, to: "f", point: 0 };
+            checkMove = { from: talon, to: { value: 0, suit: "Foundation" }, point: 0 };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
           }
 
@@ -78,8 +78,8 @@ module.exports = function ({ talon, foundation, stacks }) {
             talon.value === 2
           ) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 1,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
@@ -93,8 +93,8 @@ module.exports = function ({ talon, foundation, stacks }) {
             talon.value >= 3
           ) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 4,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
@@ -127,8 +127,8 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Same suit in foundation bigger than 2
           if (talon.suit === foundationCard.suit && talon.value > 2) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 4,
             };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
