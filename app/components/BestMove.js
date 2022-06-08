@@ -9,9 +9,12 @@ import {
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-import Card from "./Card";
+// Hooks
+import useBestMove from "../hooks/useBestMove";
 
 const BestMove = ({ loading, move, error, onResetPicture }) => {
+  const bestMove  = useBestMove({ move });
+
   if (loading) {
     return (
       <View style={loadingStyles}>
@@ -46,21 +49,11 @@ const BestMove = ({ loading, move, error, onResetPicture }) => {
         <Text style={styles.header.title}>Bedste træk</Text>
         <Text style={styles.header.description}>
           Vi har ud fra det pågældende billede vurderet, at det bedstre træk at
-          foretage er at rykke
+          foretage er
         </Text>
       </View>
 
-
-      {/* CHANGE THIS */}
-      <View style={styles.cardsContainer}>
-        {/*<Card rank={move.from.value} suit={move.from.suit} />
-        <AntDesign style={styles.cardsContainer.svg} name="right" size={25} />
-        <Card rank={move.to.value} suit={move.to.suit} />*/}
-        
-        <Card rank={12} suit={"SPADE"} />
-        <AntDesign style={styles.cardsContainer.svg} name="right" size={25} />
-        <Card rank={13} suit={"HEART"} />
-      </View>
+      {bestMove}
 
       <TouchableOpacity style={styles.button} onPress={onResetPicture}>
         <Text style={styles.button.title}>Ok</Text>
@@ -84,19 +77,6 @@ const styles = StyleSheet.create({
   paddingTop: 80,
   flex: 1,
   justifyContent: "space-between",
-
-  cardsContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 200,
-
-    svg: {
-      marginRight: 20,
-      marginLeft: 20,
-    },
-  },
 
   header: {
     alignItems: "center",

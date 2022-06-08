@@ -25,7 +25,7 @@ export default function App() {
   const [hasCameraPermissions, setHasCameraPermissions] = useState(undefined);
   const [hasMediaLibraryPermissions, setHasMediaLibraryPermissions] =
     useState(undefined);
-  const [photo, setPhoto] = useState(undefined);
+  const [photo, setPhoto] = useState(1);
   const [bestMove, setBestMove] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
