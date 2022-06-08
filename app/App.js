@@ -85,7 +85,7 @@ export default function App() {
         let formData = new FormData();
         formData.append("file", { uri: localUri, name: filename, type });
 
-        const data = await fetch("http://192.168.0.105:3000/api/7-solitaire", {
+        const data = await fetch("http://192.168.1.153:3000/api/7-solitaire", {
           method: "PUT",
           body: formData,
           headers: {

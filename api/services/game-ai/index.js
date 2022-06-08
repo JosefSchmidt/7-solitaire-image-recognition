@@ -6,6 +6,7 @@ const { move, draw } = { move: "move", draw: "draw" };
 
 module.exports = function ({ talon, foundation, stacks }) {
   let checkMove = {};
+  //let bestMove = { from: {}, to: {}, point: 100 };
   let bestMove = { from: "", to: "", point: 100 };
   let outputMove = {};
 
@@ -39,6 +40,7 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== talon.color &&
             topCard.value - talon.value === 1
           ) {
+            //checkMove = { from: talon, to: topCard, point: 20 };
             checkMove = { from: talon.class, to: topCard.class, point: 20 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }

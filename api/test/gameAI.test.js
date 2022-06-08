@@ -57,6 +57,7 @@ describe("#aiService()", function () {
         };
 
         const { talon, foundation, stacks } = mockData;
+        //let expectedMove = { action: "move", from: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }, to: "f" }
         let expectedMove = { action: "move", from: "Ad", to: "f" };
 
         // Acts
