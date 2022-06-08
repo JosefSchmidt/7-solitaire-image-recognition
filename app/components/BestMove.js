@@ -50,6 +50,8 @@ const BestMove = ({ loading, move, error, onResetPicture }) => {
         </Text>
       </View>
 
+
+      {/* CHANGE THIS */}
       <View style={styles.cardsContainer}>
         <Card suit={"H"} />
         <AntDesign style={styles.cardsContainer.svg} name="right" size={25} />
