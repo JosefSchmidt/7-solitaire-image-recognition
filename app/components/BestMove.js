@@ -53,9 +53,13 @@ const BestMove = ({ loading, move, error, onResetPicture }) => {
 
       {/* CHANGE THIS */}
       <View style={styles.cardsContainer}>
-        <Card suit={"H"} />
+        {/*<Card rank={move.from.value} suit={move.from.suit} />
         <AntDesign style={styles.cardsContainer.svg} name="right" size={25} />
-        <Card suit={"S"} />
+        <Card rank={move.to.value} suit={move.to.suit} />*/}
+        
+        <Card rank={12} suit={"SPADE"} />
+        <AntDesign style={styles.cardsContainer.svg} name="right" size={25} />
+        <Card rank={13} suit={"HEART"} />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={onResetPicture}>

@@ -6,6 +6,7 @@ const { move, draw } = { move: "move", draw: "draw" };
 
 module.exports = function ({ talon, foundation, stacks }) {
   let checkMove = {};
+  //let bestMove = { from: {}, to: {}, point: 100 };
   let bestMove = { from: "", to: "", point: 100 };
   let outputMove = {};
 
@@ -39,14 +40,15 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== talon.color &&
             topCard.value - talon.value === 1
           ) {
-            checkMove = { from: talon.class, to: topCard.class, point: 20 };
+            //checkMove = { from: talon, to: topCard, point: 20 };
+            checkMove = { from: talon, to: topCard, point: 20 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
 
           // Stack to stack
           // Move king to empty column
           if (card.value === 13 && topCard === null) {
-            checkMove = { from: card.class, to: stringStack, point: 2 };
+            checkMove = { from: card, to: {suit: "Stack", value: index}, point: 2 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
           
@@ -56,7 +58,7 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== card.color &&
             topCard.value - card.value === 1
           ) {
-            checkMove = { from: card.class, to: topCard.class, point: 5 };
+            checkMove = { from: card, to: topCard, point: 5 };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
         });
@@ -65,7 +67,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Talon to foundation
           // Ace
           if (talon.value === 1) {
-            checkMove = { from: talon.class, to: "f", point: 0 };
+            checkMove = { from: talon, to: { value: 0, suit: "Foundation" }, point: 0 };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
           }
 
@@ -76,8 +78,8 @@ module.exports = function ({ talon, foundation, stacks }) {
             talon.value === 2
           ) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 1,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
@@ -91,8 +93,8 @@ module.exports = function ({ talon, foundation, stacks }) {
             talon.value >= 3
           ) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 4,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
@@ -101,7 +103,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Stack to foundation
           // Empty foundation
           if (card.value === 1) {
-            checkMove = { from: card.class, to: "f", point: 0 };
+            checkMove = { from: card, to: { value: 0, suit: "Foundation" }, point: 0 };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
           }
 
@@ -113,10 +115,10 @@ module.exports = function ({ talon, foundation, stacks }) {
             return;
 
           // Same suit in foundation under 3
-          if (card.suit === foundationCard.suit && card.value < 3) {
+          if (card.suit === foundationCard.suit && card.value === 2) {
             checkMove = {
-              from: card.class,
-              to: foundationCard.class,
+              from: card,
+              to: foundationCard,
               point: 2,
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
@@ -125,8 +127,8 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Same suit in foundation bigger than 2
           if (talon.suit === foundationCard.suit && talon.value > 2) {
             checkMove = {
-              from: talon.class,
-              to: foundationCard.class,
+              from: talon,
+              to: foundationCard,
               point: 4,
             };
             return (bestMove = evaluateBestMove(checkMove, bestMove));

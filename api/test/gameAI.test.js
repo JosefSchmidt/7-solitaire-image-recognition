@@ -57,7 +57,7 @@ describe("#aiService()", function () {
         };
 
         const { talon, foundation, stacks } = mockData;
-        let expectedMove = { action: "move", from: "Ad", to: "f" };
+        let expectedMove = { action: "move", from: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }, to: { value: 0, suit: "Foundation" } };
 
         // Acts
         let resultMove = gameAi({ talon, foundation, stacks });
@@ -115,7 +115,8 @@ describe("#aiService()", function () {
 
       const { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "Kh", to: "s1" };
+      let expectedMove = { action: "move", from: { class: "Kh", value: 13, suit: "HEART", color: "RED" }, to: {suit: "Stack", value: 0}};
+      //let expectedMove = { action: "move", from: "Kh", to: "s1" };
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -173,7 +174,10 @@ describe("#aiService()", function () {
             },
           ],
         };
-        let expectedMove = { action: "move", from: "2h", to: "Ah" };
+
+        let expectedMove = { action: "move", from: { class: "2h", value: 2, suit: "HEART", color: "RED" }, to: { class: "Ah", value: 1, suit: "HEART", color: "RED" } }
+        //let expectedMove = { action: "move", from: "2h", to: "Ah" };
+
         const { talon, foundation, stacks } = mockData;
 
         // Acts
@@ -350,7 +354,8 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "3s", to: "4h" };
+      let expectedMove = { action: "move", from: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }, to: { class: "4h", value: 4, suit: "HEART", color: "RED" } };
+      
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -406,7 +411,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "3s", to: "4d" };
+      let expectedMove = { action: "move", from: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }, to: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -461,7 +466,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "Ad", to: "f" };
+      let expectedMove = { action: "move", from: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }, to: { value: 0, suit: "Foundation" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -520,7 +525,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "2s", to: "As" };
+      let expectedMove = { action: "move", from: { class: "2s", value: 2, suit: "SPADE", color: "BLACK" }, to: { class: "As", value: 1, suit: "SPADE", color: "BLACK" } };
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -575,7 +580,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: "4h", to: "5s" };
+      let expectedMove = { action: "move", from: { class: "4h", value: 4, suit: "HEART", color: "RED" }, to:  { class: "5s", value: 5, suit: "SPADE", color: "BLACK" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
