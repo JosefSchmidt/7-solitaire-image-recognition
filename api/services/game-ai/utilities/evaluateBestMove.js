@@ -1,7 +1,8 @@
 module.exports = (checkMove, bestMove) => {
   let newBestMove = bestMove;
-
-  if (checkMove.point < bestMove.point) {
+  if(bestMove === undefined){
+    newBestMove = checkMove;
+  } else if (checkMove.point < bestMove.point) {
     newBestMove = checkMove;
   }
 

@@ -23,20 +23,20 @@ module.exports = function ({ talon, foundation, stacks }) {
     }
 
     // A stack contains an es
-    for (let i = 0; i < stacks.length; i++) {
+    /*for (let i = 0; i < stacks.length; i++) {
       if (topCard.value === 1) {
         return {
           action: action.move,
-          from: stacks[i].topCard.class,
+          from: stacks[i].topCard,
           to: { section: section.foundation },
         };
       }
-    }
+    }*/
 
-    stacks.forEach(({ cards }) => {
-      cards.forEach((card, index) => {
-        let fromColumn = getColumnName(index);
-
+    stacks.forEach(({ cards }, index) => {
+      let fromColumn = getColumnName(index);
+        
+      cards.forEach((card) => {
         /*
          * First loop over all the topCards in all the other stacks to find the best move
          * */
@@ -65,14 +65,15 @@ module.exports = function ({ talon, foundation, stacks }) {
                 column: toColumn,
                 card: topCard,
               },
-              point: 20,
+              point: 20
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
-
+          
           // Stack to stack
           // Move king to empty column
           if (card.value === 13 && topCard === null) {
+            console.log(index);
             let checkMove = {
               action: action.move,
               from: {
@@ -83,9 +84,9 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: {
                 section: section.columns,
                 column: toColumn,
-                card: null,
+                topcard: null,
               },
-              point: 2,
+              point: 2
             };
             bestMove = evaluateBestMove(checkMove, bestMove);
           }
@@ -117,7 +118,7 @@ module.exports = function ({ talon, foundation, stacks }) {
         foundation.forEach((foundationCard) => {
           // Talon to foundation
           // Ace
-          if (talon.value === 1) {
+          /*if (talon.value === 1) {
             let checkMove = {
               action: action.move,
               from: {
@@ -131,7 +132,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               point: 0,
             };
             return (bestMove = evaluateBestMove(checkMove, bestMove));
-          }
+          }*/
 
           // if equal 2
           if (
@@ -187,8 +188,7 @@ module.exports = function ({ talon, foundation, stacks }) {
                 card,
               },
               to: {
-                section: section.foundation,
-                card: null,
+                section: section.foundation
               },
               point: 0,
             };
