@@ -608,3 +608,61 @@ describe("#aiService()", function () {
     });
   });
 });
+
+describe("#aiService()", function () {
+  context("King from talon to stack", function () {
+    it("expected game move: { action: 'move', from: 'kh', to 's1' }", function () {
+      // Arrange
+      const mockData = {
+        talon: { class: "Kh", value: 13, suit: "HEART", color: "RED" },
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: { class: "4h", value: 4, suit: "HEART", color: "RED" },
+            cards: [{ class: "4h", value: 4, suit: "HEART", color: "RED" }],
+          },
+          {
+            topCard: { class: "5s", value: 5, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "5s", value: 5, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "7s", value: 7, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "7s", value: 7, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "6s", value: 6, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "6s", value: 6, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "9s", value: 9, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "9s", value: 9, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+        ],
+      };
+      let { talon, foundation, stacks } = mockData;
+
+      let expectedMove = { 
+        action: "move", 
+        from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, section: "talon" }, 
+        to:  { topcard: null, section: "columns", column: "s7" }};
+
+      // Acts
+      let resultMove = gameAi({ talon, foundation, stacks });
+
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove);
+    });
+  });
+});
