@@ -5,8 +5,7 @@ const assert = require("assert");
 const gameAi = require("../services/game-ai");
 
 describe("#aiService()", function () {
-  context(
-    "empty foundation and ace diamond in the top of one of the stacks",
+  context("empty foundation and ace diamond in the top of one of the stacks",
     function () {
       it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function () {
         // Arrange
@@ -57,7 +56,10 @@ describe("#aiService()", function () {
         };
 
         const { talon, foundation, stacks } = mockData;
-        let expectedMove = { action: "move", from: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }, to: { value: 0, suit: "Foundation" } };
+        let expectedMove = { 
+          action: "move", 
+          from: {section: "columns", column: "s1", card: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }}, 
+          to: { section: "foundation"} };
 
         // Acts
         let resultMove = gameAi({ talon, foundation, stacks });
@@ -115,7 +117,10 @@ describe("#aiService()", function () {
 
       const { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "Kh", value: 13, suit: "HEART", color: "RED" }, to: {suit: "Stack", value: 0}};
+      let expectedMove = { 
+        action: "move", 
+      from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, column: "s3", section: "columns" }, 
+      to: {topcard: null, column: "s1", section: "columns" }};
       //let expectedMove = { action: "move", from: "Kh", to: "s1" };
 
       // Acts
@@ -128,8 +133,7 @@ describe("#aiService()", function () {
 });
 
 describe("#aiService()", function () {
-  context(
-    "there is a ace heart in foundation and their is heart 2 in the top of one of the stacks",
+  context("there is a ace heart in foundation and their is heart 2 in the top of one of the stacks",
     function () {
       it("expected game move: { action: 'move', from: '2h', to: 'Ah' }", function () {
         // Arrange
@@ -175,7 +179,11 @@ describe("#aiService()", function () {
           ],
         };
 
-        let expectedMove = { action: "move", from: { class: "2h", value: 2, suit: "HEART", color: "RED" }, to: { class: "Ah", value: 1, suit: "HEART", color: "RED" } }
+        let expectedMove = { 
+          action: "move", 
+          from: { card: {class: "2h", value: 2, suit: "HEART", color: "RED"}, column: "s1", section: "columns"}, 
+          to: { card: {class: "Ah", value: 1, suit: "HEART", color: "RED" }, section: "foundation"} 
+        }
         //let expectedMove = { action: "move", from: "2h", to: "Ah" };
 
         const { talon, foundation, stacks } = mockData;
@@ -354,7 +362,10 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }, to: { class: "4h", value: 4, suit: "HEART", color: "RED" } };
+      let expectedMove = { 
+        action: "move", 
+        from: { card: {class: "3s", value: 3, suit: "SPADE", color: "BLACK" }, column: "s2", section: "columns"}, 
+        to: { card: {class: "4h", value: 4, suit: "HEART", color: "RED"  }, column: "s3", section: "columns" } };
       
 
       // Acts
@@ -411,7 +422,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }, to: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" }};
+      let expectedMove = { action: "move", from: {section: "talon" , card: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }}, to: {card: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" }, section: "columns", column: "s1"}};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -466,7 +477,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }, to: { value: 0, suit: "Foundation" }};
+      let expectedMove = { action: "move", from: { section: "talon", card: {class:"Ad", value: 1, suit: "DIAMOND", color: "RED" }}, to: { section: "foundation" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -525,7 +536,11 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "2s", value: 2, suit: "SPADE", color: "BLACK" }, to: { class: "As", value: 1, suit: "SPADE", color: "BLACK" } };
+      let expectedMove = { 
+        action: "move", 
+        from: { card: {class: "2s", value: 2, suit: "SPADE", color: "BLACK"}, section: "talon" }, 
+        to: { card: {class: "As", value: 1, suit: "SPADE", color: "BLACK" }, section: "foundation"} 
+      };
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -580,7 +595,68 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { class: "4h", value: 4, suit: "HEART", color: "RED" }, to:  { class: "5s", value: 5, suit: "SPADE", color: "BLACK" }};
+      let expectedMove = { 
+        action: "move", 
+        from: { card: {class: "4h", value: 4, suit: "HEART", color: "RED"}, section: "columns", column: "s1" }, 
+        to:  { card: {class: "5s", value: 5, suit: "SPADE", color: "BLACK"}, section: "columns", column: "s2" }};
+
+      // Acts
+      let resultMove = gameAi({ talon, foundation, stacks });
+
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove);
+    });
+  });
+});
+
+describe("#aiService()", function () {
+  context("King from talon to stack", function () {
+    it("expected game move: { action: 'move', from: 'kh', to 's1' }", function () {
+      // Arrange
+      const mockData = {
+        talon: { class: "Kh", value: 13, suit: "HEART", color: "RED" },
+        foundation: [
+          { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
+          { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+          { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+        ],
+        stacks: [
+          {
+            topCard: { class: "4h", value: 4, suit: "HEART", color: "RED" },
+            cards: [{ class: "4h", value: 4, suit: "HEART", color: "RED" }],
+          },
+          {
+            topCard: { class: "5s", value: 5, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "5s", value: 5, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "7s", value: 7, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "7s", value: 7, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "6s", value: 6, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "6s", value: 6, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: { class: "9s", value: 9, suit: "SPADE", color: "BLACK" },
+            cards: [{ class: "9s", value: 9, suit: "SPADE", color: "BLACK" }],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+        ],
+      };
+      let { talon, foundation, stacks } = mockData;
+
+      let expectedMove = { 
+        action: "move", 
+        from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, section: "talon" }, 
+        to:  { topcard: null, section: "columns", column: "s7" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
