@@ -25,7 +25,7 @@ export default function App() {
   const [hasCameraPermissions, setHasCameraPermissions] = useState(undefined);
   const [hasMediaLibraryPermissions, setHasMediaLibraryPermissions] =
     useState(undefined);
-  const [photo, setPhoto] = useState(1);
+  const [photo, setPhoto] = useState(undefined);
   const [bestMove, setBestMove] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -85,7 +85,7 @@ export default function App() {
         let formData = new FormData();
         formData.append("file", { uri: localUri, name: filename, type });
 
-        const data = await fetch("http://192.168.0.105:3000/api/7-solitaire", {
+        const data = await fetch("http://192.168.0.107:3000/api/7-solitaire", {
           method: "PUT",
           body: formData,
           headers: {
@@ -96,15 +96,18 @@ export default function App() {
 
         const result = await data.json();
 
+        console.log(result);
+
         setBestMove(result);
       } catch (error) {
+        console.log(error);
         setError(true);
       } finally {
         setLoading(false);
       }
     };
 
-    if (loading || bestMove || error) {
+    if (photo && (loading || bestMove || error)) {
       return (
         <BestMove
           move={bestMove}

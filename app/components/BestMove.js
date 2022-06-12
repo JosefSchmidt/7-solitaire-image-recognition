@@ -13,7 +13,6 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import useBestMove from "../hooks/useBestMove";
 
 const BestMove = ({ loading, move, error, onResetPicture }) => {
-  const bestMove  = useBestMove({ move });
 
   if (loading) {
     return (
@@ -41,6 +40,8 @@ const BestMove = ({ loading, move, error, onResetPicture }) => {
       </View>
     );
   }
+
+  const bestMove  = useBestMove({ move });
 
   return (
     <View style={styles}>

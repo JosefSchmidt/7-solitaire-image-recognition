@@ -6,35 +6,35 @@ const evaluateBestMove = require("./utilities/evaluateBestMove");
 const section = require("../../config/section");
 const action = require("../../config/action");
 
+let previousMoveStack = [];
+
 module.exports = function ({ talon, foundation, stacks }) {
-  let bestMove = undefined;
+  let bestMove = { point: 500 };
 
   try {
-    // Talon is empty draw
-    if (talon === null) return { action: action.draw };
-
     // Talon contains a card that is an es
-    if (talon.value === 1) {
+    if (talon && talon.value === 1) {
       return {
         action: action.move,
-        from: { section: section.talon, card: talon },
-        to: { section: section.foundation },
+        from: { section: section.talon, card: talon, topCard: section.talon },
+        to: { section: section.foundation, card: null },
       };
     }
 
     // A stack contains an es
     for (let i = 0; i < stacks.length; i++) {
-      if (topCard.value === 1) {
+      if (stacks[i].topCard && stacks[i].topCard.value === 1) {
         return {
           action: action.move,
-          from: stacks[i].topCard.class,
+          from: { section: section.talon, car: stacks[i].topCard.class },
           to: { section: section.foundation },
+          point: 1,
         };
       }
     }
 
     stacks.forEach(({ cards }) => {
-      cards.forEach((card, index) => {
+      cards.forEach((card, index, topCard) => {
         let fromColumn = getColumnName(index);
 
         /*
@@ -67,7 +67,11 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 20,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // Stack to stack
@@ -87,7 +91,11 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 2,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // Move card if valid
@@ -110,14 +118,18 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 5,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
         });
 
         foundation.forEach((foundationCard) => {
           // Talon to foundation
           // Ace
-          if (talon.value === 1) {
+          if (talon && talon.value === 1) {
             let checkMove = {
               action: action.move,
               from: {
@@ -130,11 +142,16 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 0,
             };
-            return (bestMove = evaluateBestMove(checkMove, bestMove));
+            return (bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMove,
+            }));
           }
 
           // if equal 2
           if (
+            talon &&
             talon.suit === foundationCard.suit &&
             talon.value - foundationCard.value === 1 &&
             talon.value === 2
@@ -151,7 +168,11 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 1,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // From 3 and up
@@ -173,12 +194,16 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 4,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // Stack to foundation
           // Empty foundation
-          if (card.value === 1) {
+          if (card && card.value === 1) {
             let checkMove = {
               action: action.move,
               from: {
@@ -192,18 +217,22 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 0,
             };
-            return (bestMove = evaluateBestMove(checkMove, bestMove));
+            return (bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMove,
+            }));
           }
 
           // Check if move is valid
           if (
-            card.color !== foundationCard.color ||
+            (card !== null && card.color !== foundationCard.color) ||
             card.value - foundationCard.value !== 1
           )
             return;
 
           // Same suit in foundation under 3
-          if (card.suit === foundationCard.suit && card.value === 2) {
+          if (card && card.suit === foundationCard.suit && card.value === 2) {
             let checkMove = {
               action: action.move,
               from: {
@@ -217,17 +246,25 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 2,
             };
-            bestMove = evaluateBestMove(checkMove, bestMove);
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // Same suit in foundation bigger than 2
-          if (card.suit === foundationCard.suit && card.value > 2) {
+          if (
+            topCard &&
+            topCard.suit === foundationCard.suit &&
+            topCard.value > 2
+          ) {
             let checkMove = {
               action: action.move,
               from: {
                 section: section.columns,
                 column: fromColumn,
-                card: card,
+                card: topCard,
               },
               to: {
                 section: section.foundation,
@@ -235,14 +272,23 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 4,
             };
-            return (bestMove = evaluateBestMove(checkMove, bestMove));
+            return (bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            }));
           }
         });
       });
     });
 
     // if available moves draw
-    if (!bestMove) return { action: action.draw };
+    if (!bestMove || !bestMove.action) {
+      previousMoveStack = [];
+      return { action: action.draw };
+    }
+
+    previousMoveStack.push(bestMove);
 
     delete bestMove.point;
     return bestMove;

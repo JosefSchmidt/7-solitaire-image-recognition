@@ -11,6 +11,8 @@ import action from "../config/action";
 import section from "../config/section";
 
 const UseBestMove = ({ move }) => {
+  if (!move) return null;
+
   // Draw a card from the stack
   if (move.action === action.draw) {
     return (
@@ -19,6 +21,7 @@ const UseBestMove = ({ move }) => {
       </View>
     );
   }
+
 
   // Move es to empty foundation
   if (

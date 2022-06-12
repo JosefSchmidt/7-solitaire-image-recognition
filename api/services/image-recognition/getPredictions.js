@@ -47,9 +47,7 @@ module.exports = async function (imageBuffer) {
       const klass = imageTypes[classes_data[i]];
       const score = scores_data[i].toFixed(2);
 
-      if (parseFloat(score) >= 0.70) {
-        predictions.push(klass);
-      }
+      predictions.push(klass);
     }
 
     return predictions;
