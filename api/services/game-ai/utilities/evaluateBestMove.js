@@ -24,9 +24,8 @@ module.exports = ({ checkMove, bestMove, previousMoveStack }) => {
   if (shouldReturn) return bestMove;
 
   let newBestMove = bestMove;
-  if(bestMove === undefined){
-    newBestMove = checkMove;
-  } else if (checkMove.point < bestMove.point) {
+
+  if (checkMove.point < bestMove.point) {
     newBestMove = checkMove;
   }
 
