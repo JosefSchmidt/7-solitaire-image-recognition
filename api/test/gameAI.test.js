@@ -120,7 +120,7 @@ describe("#aiService()", function () {
       let expectedMove = { 
         action: "move", 
       from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, column: "s3", section: "columns" }, 
-      to: {topcard: null, column: "s1", section: "columns" }};
+      to: {card: null, column: "s1", section: "columns" }};
       //let expectedMove = { action: "move", from: "Kh", to: "s1" };
 
       // Acts
@@ -281,8 +281,8 @@ describe("#aiService()", function () {
             cards: [{ class: "Kh", value: 13, suit: "HEART", color: "RED" }],
           },
           {
-            topCard: { class: "8s", value: 8, suit: "SPADE", color: "BLACK" },
-            cards: [{ class: "8s", value: 8, suit: "SPADE", color: "BLACK" }],
+            topCard: { class: "8h", value: 8, suit: "HEART", color: "RED" },
+            cards: [{ class: "8h", value: 8, suit: "HEART", color: "RED" }],
           },
           {
             topCard: { class: "9h", value: 9, suit: "HEART", color: "RED" },
@@ -379,10 +379,10 @@ describe("#aiService()", function () {
 
 describe("#aiService()", function () {
   context("move from talon to stack", function () {
-    it("expected game move: { action: 'move', from: '3s', to '4d' }", function () {
+    it("expected game move: { action: 'move', from: '3c', to '4d' }", function () {
       // Arrange
       const mockData = {
-        talon: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" },
+        talon: { class: "6h", value: 6, suit: "HEART", color: "RED" },
         foundation: [
           { class: "As", value: 1, suit: "SPADE", color: "BLACK" },
           { class: "Ah", value: 1, suit: "HEART", color: "RED" },
@@ -391,8 +391,8 @@ describe("#aiService()", function () {
         ],
         stacks: [
           {
-            topCard: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" },
-            cards: [{ class: "4d", value: 4, suit: "DIAMOND", color: "RED" }],
+            topCard: { class: "4h", value: 4, suit: "HEART", color: "RED" },
+            cards: [{ class: "4h", value: 4, suit: "HEART", color: "RED" }],
           },
           {
             topCard: {},
@@ -422,7 +422,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: {section: "talon" , card: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" }}, to: {card: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" }, section: "columns", column: "s1"}};
+      let expectedMove = { action: "move", from: {section: "talon" , card: { class: "6h", value: 6, suit: "HEART", color: "RED" }}, to: {card: { class: "7s", value: 7, suit: "SPADE", color: "BLACK" }, section: "columns", column: "s3"}};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -450,7 +450,7 @@ describe("#aiService()", function () {
             cards: [{ class: "4d", value: 4, suit: "DIAMOND", color: "RED" }],
           },
           {
-            topCard: {},
+            topCard: null,
             cards: [],
           },
           {
@@ -477,7 +477,7 @@ describe("#aiService()", function () {
       };
       let { talon, foundation, stacks } = mockData;
 
-      let expectedMove = { action: "move", from: { section: "talon", card: {class:"Ad", value: 1, suit: "DIAMOND", color: "RED" }}, to: { section: "foundation" }};
+      let expectedMove = { action: "move", from: { section: "talon", card: {class:"Ad", value: 1, suit: "DIAMOND", color: "RED" }}, to: { section: "foundation", card: null }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
@@ -656,7 +656,7 @@ describe("#aiService()", function () {
       let expectedMove = { 
         action: "move", 
         from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, section: "talon" }, 
-        to:  { topcard: null, section: "columns", column: "s7" }};
+        to:  { card: null, section: "columns", column: "s7" }};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });
