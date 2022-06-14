@@ -16,7 +16,7 @@ module.exports = function ({ talon, foundation, stacks }) {
     if (talon && talon.value === 1) {
       return {
         action: action.move,
-        from: { section: section.talon, card: talon, topCard: section.talon },
+        from: { section: section.talon, card: talon },
         to: { section: section.foundation, card: null },
       };
     }
@@ -26,17 +26,16 @@ module.exports = function ({ talon, foundation, stacks }) {
       if (stacks[i] && stacks[i].topCard && stacks[i].topCard.value === 1) {
         return {
           action: action.move,
-          from: { section: section.talon, car: stacks[i].topCard.class },
+          from: { section: section.talon, card: stacks[i].topCard.class },
           to: { section: section.foundation },
           point: 1,
         };
       }
     }
 
-    stacks.forEach(({ cards }) => {
+    stacks.forEach(({ cards }, index) => {
+      let fromColumn = getColumnName(index);
       cards.forEach((card, index, topCard) => {
-        let fromColumn = getColumnName(index);
-
         /*
          * First loop over all the topCards in all the other stacks to find the best move
          * */
@@ -75,7 +74,7 @@ module.exports = function ({ talon, foundation, stacks }) {
           }
 
           // Move king to empty column
-          if (talon.value === 13 && topCard === null) {
+          if (talon && talon.value === 13 && topCard === null) {
             let checkMove = {
               action: action.move,
               from: {
@@ -85,7 +84,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: {
                 section: section.columns,
                 column: toColumn,
-                topcard: null,
+                card: null,
               },
               point: 3,
             };
@@ -110,7 +109,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               to: {
                 section: section.columns,
                 column: toColumn,
-                topcard: null,
+                card: null,
               },
               point: 2,
             };
