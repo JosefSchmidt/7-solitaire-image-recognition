@@ -89,7 +89,11 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               point: 3,
             };
-            bestMove = evaluateBestMove({checkMove, bestMove, previousMoveStack});
+            bestMove = evaluateBestMove({
+              checkMove,
+              bestMove,
+              previousMoveStack,
+            });
           }
 
           // Stack to stack
@@ -238,7 +242,7 @@ module.exports = function ({ talon, foundation, stacks }) {
             return (bestMove = evaluateBestMove({
               checkMove,
               bestMove,
-              previousMove,
+              previousMoveStack,
             }));
           }
 
