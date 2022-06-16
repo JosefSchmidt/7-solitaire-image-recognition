@@ -24,18 +24,18 @@ module.exports = function ({ talon, foundation, stacks }) {
     // A stack contains an es
     for (let i = 0; i < stacks.length; i++) {
       if (stacks[i] && stacks[i].topCard && stacks[i].topCard.value === 1) {
+        let fromColumn = getColumnName(i);
         return {
           action: action.move,
-          from: { section: section.talon, card: stacks[i].topCard.class },
-          to: { section: section.foundation, card: null },
-          point: 1,
+          from: { section: section.columns, column: fromColumn, card: stacks[i].topCard },
+          to: { section: section.foundation, card: null }
         };
       }
     }
 
     stacks.forEach(({ cards }, index) => {
       let fromColumn = getColumnName(index);
-      cards.forEach((card, index, topCard) => {
+      cards.forEach((card, topCard) => {
         /*
          * First loop over all the topCards in all the other stacks to find the best move
          * */
@@ -52,7 +52,6 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== talon.color &&
             topCard.value - talon.value === 1
           ) {
-            //checkMove = { from: talon, to: topCard, point: 20 };
             let checkMove = {
               action: action.move,
               from: {
@@ -235,6 +234,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               to: {
                 section: section.foundation,
+                card: null,
               },
               point: 0,
             };
