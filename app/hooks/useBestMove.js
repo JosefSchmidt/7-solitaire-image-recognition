@@ -17,7 +17,7 @@ const UseBestMove = ({ move }) => {
   if (move.action === action.draw) {
     return (
       <View style={styles}>
-        <Text style={styles.title}>Træk et kort fra bunken</Text>
+        <Text style={styles.title}>Træk tre kort fra bunken</Text>
       </View>
     );
   }

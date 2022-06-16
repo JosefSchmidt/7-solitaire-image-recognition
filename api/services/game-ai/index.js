@@ -28,7 +28,7 @@ module.exports = function ({ talon, foundation, stacks }) {
         return {
           action: action.move,
           from: { section: section.columns, column: fromColumn, card: stacks[i].topCard },
-          to: { section: section.foundation }
+          to: { section: section.foundation, card: null }
         };
       }
     }
@@ -52,7 +52,6 @@ module.exports = function ({ talon, foundation, stacks }) {
             topCard.color !== talon.color &&
             topCard.value - talon.value === 1
           ) {
-            console.log("dsf");
             let checkMove = {
               action: action.move,
               from: {
@@ -235,6 +234,7 @@ module.exports = function ({ talon, foundation, stacks }) {
               },
               to: {
                 section: section.foundation,
+                card: null,
               },
               point: 0,
             };
