@@ -59,7 +59,7 @@ describe("#aiService()", function () {
         let expectedMove = { 
           action: "move", 
           from: {section: "columns", column: "s1", card: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }}, 
-          to: { section: "foundation"} };
+          to: { section: "foundation", card: null} };
 
         // Acts
         let resultMove = gameAi({ talon, foundation, stacks });
@@ -657,6 +657,63 @@ describe("#aiService()", function () {
         action: "move", 
         from: { card: {class: "Kh", value: 13, suit: "HEART", color: "RED"}, section: "talon" }, 
         to:  { card: null, section: "columns", column: "s7" }};
+
+      // Acts
+      let resultMove = gameAi({ talon, foundation, stacks });
+
+      // Assert
+      assert.deepStrictEqual(resultMove, expectedMove);
+    });
+  });
+});
+
+describe("#aiService()", function () {
+  context("win condition", function () {
+    it("expected game move: { action: 'win'}", function () {
+      // Arrange
+      const mockData = {
+        talon: null,
+        foundation: [
+          {  class: "Kh", value: 13, suit: "HEART", color: "RED" },
+          {  class: "Ks", value: 13, suit: "SPADE", color: "BLACK" },
+          {  class: "Kc", value: 13, suit: "CLOVER", color: "BLACK" },
+          {  class: "Kd", value: 13, suit: "DIAMOND", color: "RED" }
+        ],
+        stacks: [
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+          {
+            topCard: null,
+            cards: [],
+          },
+        ],
+      };
+      let { talon, foundation, stacks } = mockData;
+
+      let expectedMove = { 
+        action: "win"};
 
       // Acts
       let resultMove = gameAi({ talon, foundation, stacks });

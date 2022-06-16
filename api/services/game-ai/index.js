@@ -7,6 +7,7 @@ const section = require("../../config/section");
 const action = require("../../config/action");
 
 let previousMoveStack = [];
+let winStack = [];
 
 module.exports = function ({ talon, foundation, stacks }) {
   let bestMove = { point: 500 };
@@ -32,6 +33,12 @@ module.exports = function ({ talon, foundation, stacks }) {
         };
       }
     }
+    // Check for done foundation.
+    foundation.forEach((foundationCard) => {
+      if(foundationCard.value === 13 ){
+        winStack.push(foundationCard);
+      }
+    })
 
     stacks.forEach(({ cards }, index) => {
       let fromColumn = getColumnName(index);
@@ -97,7 +104,6 @@ module.exports = function ({ talon, foundation, stacks }) {
           // Stack to stack
           // Move king to empty column
           if (card.value === 13 && topCard === null) {
-            console.log(index);
             let checkMove = {
               action: action.move,
               from: {
@@ -246,11 +252,11 @@ module.exports = function ({ talon, foundation, stacks }) {
           }
 
           // Check if move is valid
-          if (
+          /*if (
             (card !== null && card.color !== foundationCard.color) ||
             card.value - foundationCard.value !== 1
           )
-            return;
+            return;*/
 
           // Same suit in foundation under 3
           if (card && card.suit === foundationCard.suit && card.value === 2) {
@@ -303,7 +309,13 @@ module.exports = function ({ talon, foundation, stacks }) {
       });
     });
 
+    
 
+    // win move
+    if(winStack.length === 4){
+      return { action: action.win};
+    }
+    console.log(winStack.length);
     // if available moves draw
     if (!bestMove || !bestMove.action) {
       previousMoveStack = [];
