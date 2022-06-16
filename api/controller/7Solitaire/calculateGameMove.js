@@ -47,6 +47,8 @@ module.exports = async (req, res) => {
 
     const bestMove = await gameAI({ talon, foundation, stacks });
 
+
+
     return res.send(bestMove);
   } catch (error) {
     res.sendStatus(500);

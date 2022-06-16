@@ -27,7 +27,7 @@ module.exports = function ({ talon, foundation, stacks }) {
         return {
           action: action.move,
           from: { section: section.talon, card: stacks[i].topCard.class },
-          to: { section: section.foundation },
+          to: { section: section.foundation, card: null },
           point: 1,
         };
       }
@@ -302,6 +302,7 @@ module.exports = function ({ talon, foundation, stacks }) {
         });
       });
     });
+
 
     // if available moves draw
     if (!bestMove || !bestMove.action) {
