@@ -5,8 +5,7 @@ const assert = require("assert");
 const gameAi = require("../services/game-ai");
 
 describe("#aiService()", function () {
-  context("empty foundation and ace diamond in the top of one of the stacks",
-    function () {
+  context("empty foundation and ace diamond in the top of one of the stacks", function () {
       it("expected game move: { action: 'move', from: 'Ad', to: 'f' }", function () {
         // Arrange
         const mockData = {
@@ -133,8 +132,7 @@ describe("#aiService()", function () {
 });
 
 describe("#aiService()", function () {
-  context("there is a ace heart in foundation and their is heart 2 in the top of one of the stacks",
-    function () {
+  context("there is a ace heart in foundation and their is heart 2 in the top of one of the stacks", function () {
       it("expected game move: { action: 'move', from: '2h', to: 'Ah' }", function () {
         // Arrange
         const mockData = {
@@ -722,4 +720,71 @@ describe("#aiService()", function () {
       assert.deepStrictEqual(resultMove, expectedMove);
     });
   });
+});
+
+
+describe("#aiService()", function () {
+  context("Stack to foundation higher than two", function () {
+      it("expected game move: { action: 'move', from: '6s', to: '5s' }", function () {
+        // Arrange
+        const mockData = {
+          talon: { class: "3s", value: 3, suit: "SPADE", color: "BLACK" },
+          foundation: [
+            { class: "Ah", value: 1, suit: "HEART", color: "RED" },
+            { class: "Ac", value: 1, suit: "CLOVER", color: "BLACK" },
+            { class: "5s", value: 6, suit: "SPADE", color: "BLACK" }
+          ],
+          stacks: [
+            {
+              topCard: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" },
+              cards: [{ class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }],
+            },
+            {
+              topCard: { class: "4d", value: 4, suit: "DIAMOND", color: "RED" },
+              cards: [{ class: "4d", value: 4, suit: "DIAMOND", color: "RED" }],
+            },
+            {
+              topCard: { class: "5s", value: 5, suit: "SPADE", color: "BLACK" },
+              cards: [{ class: "5s", value: 5, suit: "SPADE", color: "BLACK" }],
+            },
+            {
+              topCard: { class: "6s", value: 6, suit: "SPADE", color: "BLACK" },
+              cards: [{ class: "6s", value: 6, suit: "SPADE", color: "BLACK" }],
+            },
+            {
+              topCard: { class: "7d", value: 7, suit: "DIAMOND", color: "RED" },
+              cards: [{ class: "7d", value: 7, suit: "DIAMOND", color: "RED" }],
+            },
+            {
+              topCard: { class: "5d", value: 5, suit: "DIAMOND", color: "RED" },
+              cards: [{ class: "5d", value: 5, suit: "DIAMOND", color: "RED" }],
+            },
+            {
+              topCard: {
+                class: "6c",
+                value: 6,
+                suit: "CLOVER",
+                color: "BLACK",
+              },
+              cards: [
+                { class: "6c", value: 6, suit: "CLOVER", color: "BLACK" },
+              ],
+            },
+          ],
+        };
+
+        const { talon, foundation, stacks } = mockData;
+        let expectedMove = { 
+          action: "move", 
+          from: {section: "columns", column: "s1", card: { class: "Ad", value: 1, suit: "DIAMOND", color: "RED" }}, 
+          to: { section: "foundation", card: null} };
+
+        // Acts
+        let resultMove = gameAi({ talon, foundation, stacks });
+
+        // Assert
+        assert.deepStrictEqual(resultMove, expectedMove);
+      });
+    }
+  );
 });
