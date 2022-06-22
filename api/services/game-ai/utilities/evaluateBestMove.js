@@ -9,12 +9,14 @@ module.exports = ({ checkMove, bestMove, previousMoveStack }) => {
         checkMove.from.card &&
         previousMove.from &&
         previousMove.from.card &&
+        checkMove.from.card.class === previousMove,from.card.class &&
         checkMove.from.card.value === previousMove.from.card.value) ||
       (previousMove &&
         checkMove.to &&
         checkMove.to.card &&
         previousMove.to &&
         previousMove.to.card &&
+        checkMove.from.card.class === previousMove,from.card.class &&
         checkMove.to.card.value === previousMove.to.card.value)
     ) {
       shouldReturn = true;
